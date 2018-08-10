@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace XMLDocGen
 {
@@ -58,6 +59,41 @@ namespace XMLDocGen
             }
 
             return outArr;
+        }
+
+        public static string CleanString(this string _in)
+        {
+            _in = Regex.Replace(_in, @"\t|\n|\r", ""); //Remove new lines
+            _in = Regex.Replace(_in, @"[ ]{2,}", " "); //Remove consecutive spaces
+            _in = Regex.Replace(_in, @"^\s", ""); //Remove space at the start of the string
+
+            return _in;
+        }
+
+        public static XmlNode FindMethodMemberWithName(this XmlNodeList _nodeList, string _membeName)
+        {
+            for (int i = 0; i < _nodeList.Count; i++)
+            {
+                if (Extractor.GetMethodName(_nodeList[i].Attributes["name"].Value) == _membeName)
+                {
+                    return _nodeList[i];
+                }
+            }
+
+            return null;
+        }
+
+        public static XmlNode FindMemberWithName(this XmlNodeList _nodeList, string _memberName)
+        {
+            for (int i = 0; i < _nodeList.Count; i++)
+            {
+                if (_nodeList[i].Attributes["name"].Value == _memberName)
+                {
+                    return _nodeList[i];
+                }
+            }
+
+            return null;
         }
     }
 }
