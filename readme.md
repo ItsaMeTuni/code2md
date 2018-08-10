@@ -13,7 +13,7 @@ code2md is (or _will_ be) a command line tool that creates markdown pages from a
 
 ## For the lazy ones
 
-I added a GeneratedExample.md file at the root of the repo. That is the most recent generated documentation file. Oopen it and take a look if you're too lazy to clone the repo, compile and execute it :)
+I added a [GeneratedExample.md file](GeneratedExample.md) file at the root of the repo. That is the most recent generated documentation file. Oopen it and take a look if you're too lazy to clone the repo, compile and execute it :)
 
 ## How to test it
 
