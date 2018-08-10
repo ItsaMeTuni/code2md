@@ -1,7 +1,5 @@
 # XMLDocGen.DummyClass
   
-
-  
 ## bool Foo(string _a, Int32 _b, float _c)
   
 Does foo 
@@ -28,47 +26,19 @@ string | dafuq | **Summary:** I'm lost already   **Remarks:** LorEm ipSuM DolOR 
   
 # XMLDocGen.Extractor
   
-
-  
 ## string GetMethodName()
-  
-
-  
-### Remarks
-  
-
   
 ## string GetFieldName()
   
-
-  
-### Remarks
-  
-
-  
 ## string RemoveNamePrefix()
   
-
-  
-### Remarks
-  
-
-  
 ## string CleanString()
-  
-
-  
-### Remarks
-  
-
   
 Type | Name | Description
 :---|:---|:---
 
   
 # XMLDocGen.Alignment
-  
-
   
 ## Fields
   
@@ -82,31 +52,13 @@ Alignment | Center |
   
 # XMLDocGen.MarkdownHelper
   
-
-  
 ## string get_Value()
   
-
-  
-### Remarks
-  
-
-  
 ## Void set_Value()
-  
-
-  
-### Remarks
-  
-
   
 ## Void AddText(string _text)
   
 Adds a line of text and a new line at the end 
-  
-### Remarks
-  
-
   
 Type | Parameter | Description
 :---:|:---:|:---
@@ -117,17 +69,9 @@ string | _text |
   
 Adds an empty line to the text 
   
-### Remarks
-  
-
-  
 ## Void H1(string _title)
   
 Create a level 1 header (i.e. #_title) 
-  
-### Remarks
-  
-
   
 Type | Parameter | Description
 :---:|:---:|:---
@@ -138,10 +82,6 @@ string | _title | Title of the header
   
 Create a level 2 header (i.e. ##_title) 
   
-### Remarks
-  
-
-  
 Type | Parameter | Description
 :---:|:---:|:---
 string | _title | Title of the header
@@ -150,10 +90,6 @@ string | _title | Title of the header
 ## Void H3(string _title)
   
 Create a level 3 header (i.e. ###_title) 
-  
-### Remarks
-  
-
   
 Type | Parameter | Description
 :---:|:---:|:---
@@ -164,10 +100,6 @@ string | _title | Title of the header
   
 Create a level 4 header (i.e. ####_title) 
   
-### Remarks
-  
-
-  
 Type | Parameter | Description
 :---:|:---:|:---
 string | _title | Title of the header
@@ -177,10 +109,6 @@ string | _title | Title of the header
   
 Create a header of level _i 
   
-### Remarks
-  
-
-  
 Type | Parameter | Description
 :---:|:---:|:---
 Int32 | _i | Level of the header (i.e. how many "#" before the title)
@@ -189,19 +117,7 @@ string | _title | Title of the header
   
 ## Void CreateTable()
   
-
-  
-### Remarks
-  
-
-  
 ## MarkdownHelper op_Addition()
-  
-
-  
-### Remarks
-  
-
   
 ## Fields
   
@@ -212,8 +128,6 @@ string | <Value>k__BackingField |
   
 # XMLDocGen.ParameterData
   
-
-  
 ## Fields
   
 Type | Name | Description
@@ -223,8 +137,6 @@ string | desc |
 
   
 # XMLDocGen.MethodData
-  
-
   
 ## Fields
   
@@ -238,8 +150,6 @@ string | summary |
 
   
 # XMLDocGen.ClassData
-  
-
   
 ## Fields
   
@@ -255,8 +165,6 @@ string | remarks |
   
 # XMLDocGen.FieldData
   
-
-  
 ## Fields
   
 Type | Name | Description
@@ -267,8 +175,6 @@ string | remarks |
 
   
 # XMLDocGen.PropertyData
-  
-
   
 ## Fields
   
@@ -281,31 +187,13 @@ string | remarks |
   
 # XMLDocGen.Program
   
-
-  
 ## Void Main()
   
-
-  
-### Remarks
-  
-
-  
 ## Void Generate()
-  
-
-  
-### Remarks
-  
-
   
 ## Void ReadAssembly(Assembly _assembly, XmlNodeList _xml)
   
 Reads the assembly and creates class/method/field data used to generate the markdown 
-  
-### Remarks
-  
-
   
 Type | Parameter | Description
 :---:|:---:|:---
@@ -315,19 +203,9 @@ XmlNodeList | _xml |
   
 ## Void PrintEverything()
   
-
-  
-### Remarks
-  
-
-  
 ## Void ToMarkdown()
   
 Converts the class list into a markdown page and outputs it into a file 
-  
-### Remarks
-  
-
   
 ## Fields
   
@@ -341,87 +219,27 @@ string | outFolder |
   
 # XMLDocGen.Utils
   
-
-  
 ## List<T> ListFieldToList()
-  
-
-  
-### Remarks
-  
-
   
 ## String[] ToArray()
   
-
-  
-### Remarks
-  
-
-  
 ## String[] RegexReplaceOnArray()
-  
-
-  
-### Remarks
-  
-
   
 ## String[] RegexMatchOnArray()
   
-
-  
-### Remarks
-  
-
-  
 ## string CleanString()
-  
-
-  
-### Remarks
-  
-
   
 ## XmlNode FindMethodMemberWithName()
   
-
-  
-### Remarks
-  
-
-  
 ## XmlNode FindMemberWithName()
-  
-
-  
-### Remarks
-  
-
   
 ## XmlNode FindFieldMemberWithName()
   
-
-  
-### Remarks
-  
-
-  
 ## string GetTypeNameMarkdownText()
-  
-
-  
-### Remarks
-  
-
   
 ## string ToGenericTypeString()
   
-
-  
-### Remarks
-  
-
+## bool IsEmpty()
   
 ## Fields
   
@@ -432,15 +250,7 @@ Dictionary<Type,String> | customTypeNames |
   
 # XMLDocGen.Utils+<>c
   
-
-  
 ## string <ToGenericTypeString>b__10_0()
-  
-
-  
-### Remarks
-  
-
   
 ## Fields
   

@@ -58,7 +58,7 @@ namespace XMLDocGen
     {
         const string inPath = "C:/Users/lucas/Source/Repos/XMLDocGen/XMLDocGen/bin/Debug/XMLDocGen.xml";
         const string assemblyPath = "C:/Users/lucas/Source/Repos/XMLDocGen/bin/Debug/Assembly-CSharp.dll";
-        const string outFolder = "C:/Users/lucas/Source/Repos/XMLDocGen/Tests/MD";
+        const string outFolder = "C:/Users/lucas/Source/Repos/XMLDocGen/";
 
         List<ClassData> classes = new List<ClassData>();
 
@@ -284,7 +284,7 @@ namespace XMLDocGen
                 md.CreateTable(new string[] { "Type", "Name", "Description" }, null, fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
             }
 
-            File.WriteAllText(outFolder + "/gen.md", md.Value);
+            File.WriteAllText(outFolder + "/GeneratedExample.md", md.Value);
         }
 
         /*
