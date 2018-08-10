@@ -85,7 +85,9 @@ namespace XMLDocGen
         static string assemblyPath = "/Assembly-CSharp.dll";
         static string outFolder = "/../../../";
 
-        List<ClassData> classes = new List<ClassData>();
+        static List<ClassData> classes = new List<ClassData>();
+        public static Assembly assembly;
+        static XmlNodeList xml;
 
         static void Main(string[] args)
         {
@@ -97,10 +99,10 @@ namespace XMLDocGen
 
         void Generate()
         {
-            XmlDocument xml = new XmlDocument();
-            xml.Load(GetXmlPath());
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load(GetXmlPath());
 
-            XmlNodeList members = xml.SelectNodes("doc/members/member");
+            XmlNodeList members = xmlDoc.SelectNodes("doc/members/member");
 
             //Load assembly
 
@@ -120,18 +122,19 @@ namespace XMLDocGen
             }
             */
 
-            ReadAssembly(Assembly.GetAssembly(typeof(Program)), members);
+            assembly = Assembly.GetAssembly(typeof(Program));
+            xml = members;
+
+            ReadAssembly();
             ToMarkdown();
         }
 
         /// <summary>
         /// Reads the assembly and gathers together reflected information about types/members and their respective xml comments
         /// </summary>
-        /// <param name="_assembly">The assembly to be read</param>
-        /// <param name="_xml">The assembly's xml documentation file</param>
-        void ReadAssembly(Assembly _assembly, XmlNodeList _xml)
+        void ReadAssembly()
         {
-            Type[] types = _assembly.GetTypes();
+            Type[] types = assembly.GetTypes();
 
             for (int type = 0; type < types.Length; type++)
             {
@@ -144,7 +147,7 @@ namespace XMLDocGen
 
                 classData.typeInfo = types[type].GetTypeInfo();
 
-                XmlNode classNode = _xml.FindMemberWithName(types[type].FullName);
+                XmlNode classNode = xml.FindMemberWithName(types[type].FullName);
                 classData.commentData = GetCommentData(classNode);
 
                 MethodInfo[] methods = types[type].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
@@ -158,7 +161,7 @@ namespace XMLDocGen
                     MethodData methodData = new MethodData();
                     methodData.methodInfo = methods[method];
                     
-                    XmlNode methodNode = _xml.FindMethodMemberWithName(types[type].FullName + "." + methods[method].Name);
+                    XmlNode methodNode = xml.FindMethodMemberWithName(types[type].FullName + "." + methods[method].Name);
                     methodData.commentData = GetCommentData(methodNode);
 
                     if (methodNode != null)
@@ -193,7 +196,7 @@ namespace XMLDocGen
 
                     fieldData.fieldInfo = fields[field];
 
-                    XmlNode fieldNode = _xml.FindFieldMemberWithName(types[type].FullName + "." + fields[field].Name);
+                    XmlNode fieldNode = xml.FindFieldMemberWithName(types[type].FullName + "." + fields[field].Name);
                     fieldData.commentData = GetCommentData(fieldNode);
 
                     classData.fields.Add(fieldData);
@@ -211,7 +214,7 @@ namespace XMLDocGen
 
                     propertyData.propertyInfo = properties[property];
 
-                    XmlNode propertyNode = _xml.FindFieldMemberWithName(types[type].FullName + "." + properties[property].Name);
+                    XmlNode propertyNode = xml.FindFieldMemberWithName(types[type].FullName + "." + properties[property].Name);
                     propertyData.commentData = GetCommentData(propertyNode);
 
                     classData.properties.Add(propertyData);

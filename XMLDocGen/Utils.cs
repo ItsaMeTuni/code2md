@@ -156,14 +156,23 @@ namespace XMLDocGen
         /// <param name="_type">The _type you want to get the name from</param>
         public static string GetTypeNameMarkdownText(this Type _type)
         {
+            string str = "";
+
             if(customTypeNames.ContainsKey(_type))
             {
-                return customTypeNames[_type];
+                str =  customTypeNames[_type];
             }
             else
             {
-                return GetReadableGenericTypeName(_type);
+                str =  GetReadableGenericTypeName(_type);
             }
+
+            if(_type.IsFromAssembly(Program.assembly))
+            {
+                str = MarkdownHelper.CreateLink(str, _type.FullName, 1);
+            }
+
+            return str;
         }
 
         /// <summary>
@@ -207,6 +216,15 @@ namespace XMLDocGen
         public static bool IsCompilerGenerated(this MemberInfo _member)
         {
             return _member.GetCustomAttribute(typeof(CompilerGeneratedAttribute)) != null;
+        }
+
+        /// <summary>
+        /// Checks if the type _type is declared in the assembly we're reading
+        /// </summary>
+        /// <param name="_type">Type to check</param>
+        public static bool IsFromAssembly(this Type _type, Assembly _assembly)
+        {
+            return _type.Assembly == _assembly;
         }
     }
 }

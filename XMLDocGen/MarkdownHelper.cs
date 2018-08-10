@@ -168,6 +168,20 @@ namespace XMLDocGen
             AddText(table);
         }
 
+        public static string CreateLink(string _text, string _toHeader, int _headerLevel)
+        {
+            string link = "[" + _text + "](";
+
+            for (int i = 0; i < _headerLevel; i++)
+            {
+                link += "#";
+            }
+
+            link += _toHeader + ")";
+
+            return link;
+        }
+
         public static MarkdownHelper operator +(MarkdownHelper _l, string _r)
         {
             _l.AddText(_r);
