@@ -51,9 +51,9 @@ float | _c | or this
 Type | Name | Description
 :---|:---|:---
 Int32 | value__ | 
-[Alignment](#XMLDocGen.Alignment) | Left | 
-[Alignment](#XMLDocGen.Alignment) | Right | 
-[Alignment](#XMLDocGen.Alignment) | Center | 
+[Alignment](#xmldocgenalignment) | Left | 
+[Alignment](#xmldocgenalignment) | Right | 
+[Alignment](#xmldocgenalignment) | Center | 
 
   
 # XMLDocGen.MarkdownHelper
@@ -130,7 +130,7 @@ string | _title | Title of the header
   
 ### **string CreateLink()**
   
-### **[MarkdownHelper](#XMLDocGen.MarkdownHelper) op_Addition()**
+### **[MarkdownHelper](#xmldocgenmarkdownhelper) op_Addition()**
   
 # XMLDocGen.ParameterData
   
@@ -150,7 +150,7 @@ Type | Name | Description
 :---|:---|:---
 MethodInfo | methodInfo | 
 List<ParameterData> | parameters | 
-[CommentData](#XMLDocGen.CommentData) | commentData | 
+[CommentData](#xmldocgencommentdata) | commentData | 
 
   
 # XMLDocGen.ClassData
@@ -163,7 +163,7 @@ TypeInfo | typeInfo |
 List<MethodData> | methods | 
 List<FieldData> | fields | 
 List<PropertyData> | properties | 
-[CommentData](#XMLDocGen.CommentData) | commentData | 
+[CommentData](#xmldocgencommentdata) | commentData | 
 
   
 # XMLDocGen.FieldData
@@ -173,7 +173,7 @@ List<PropertyData> | properties |
 Type | Name | Description
 :---|:---|:---
 FieldInfo | fieldInfo | 
-[CommentData](#XMLDocGen.CommentData) | commentData | 
+[CommentData](#xmldocgencommentdata) | commentData | 
 
   
 # XMLDocGen.PropertyData
@@ -183,7 +183,7 @@ FieldInfo | fieldInfo |
 Type | Name | Description
 :---|:---|:---
 PropertyInfo | propertyInfo | 
-[CommentData](#XMLDocGen.CommentData) | commentData | 
+[CommentData](#xmldocgencommentdata) | commentData | 
 
   
 # XMLDocGen.CommentData
@@ -229,7 +229,7 @@ XmlNodeList | xml |
   
 **Summary:** Gets the path of the xml documentation file in xmlPath (can be a relative or an absolute path) 
   
-### **[CommentData](#XMLDocGen.CommentData) GetCommentData(XmlNode _node)**
+### **[CommentData](#xmldocgencommentdata) GetCommentData(XmlNode _node)**
   
 **Summary:** Extracts xml comment information into a CommentData given an xml node 
   

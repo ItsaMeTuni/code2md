@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace XMLDocGen
 {
@@ -176,6 +177,11 @@ namespace XMLDocGen
             {
                 link += "#";
             }
+
+            _toHeader = Regex.Replace(_toHeader, @" ", "-");
+            _toHeader = Regex.Replace(_toHeader, @"\.", "");
+            _toHeader = Regex.Replace(_toHeader, @"\(|\)", "");
+            _toHeader = _toHeader.ToLowerInvariant();
 
             link += _toHeader + ")";
 
