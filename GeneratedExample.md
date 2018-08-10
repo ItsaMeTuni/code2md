@@ -258,21 +258,5 @@ Dictionary<Type,String> | customTypeNames |
   
 ### bool IsEmpty()
   
-### bool MethodNameIsGetterOrSetter()
-  
-### bool FieldNameIsBackingField()
-  
-# XMLDocGen.Utils+<>c
-  
-## Fields
-  
-Type | Name | Description
-:---|:---|:---
-<>c | <>9 | 
-Func<Type,String> | <>9__10_0 | 
-
-  
-## Methods
-  
-### string <ToGenericTypeString>b__10_0()
+### bool IsCompilerGenerated()
   

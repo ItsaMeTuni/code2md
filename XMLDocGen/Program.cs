@@ -7,6 +7,7 @@ using System.Xml;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace XMLDocGen
 {
@@ -110,6 +111,11 @@ namespace XMLDocGen
 
             for (int type = 0; type < types.Length; type++)
             {
+                if(types[type].IsCompilerGenerated())
+                {
+                    continue;
+                }
+
                 ClassData classData = new ClassData();
 
                 classData.typeInfo = types[type].GetTypeInfo();
@@ -125,7 +131,7 @@ namespace XMLDocGen
                 MethodInfo[] methods = types[type].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 for (int method = 0; method < methods.Length; method++)
                 {
-                    if(Utils.MethodNameIsGetterOrSetter(methods[method].Name))
+                    if(methods[method].IsCompilerGenerated())
                     {
                         continue;
                     }
@@ -161,7 +167,8 @@ namespace XMLDocGen
                 FieldInfo[] fields = types[type].GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 for (int field = 0; field < fields.Length; field++)
                 {
-                    if(Utils.FieldNameIsBackingField(fields[field].Name))
+
+                    if (fields[field].IsCompilerGenerated())
                     {
                         continue;
                     }
@@ -180,6 +187,11 @@ namespace XMLDocGen
                 PropertyInfo[] properties = types[type].GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 for (int property = 0; property < properties.Length; property++)
                 {
+                    if(properties[property].IsCompilerGenerated())
+                    {
+                        continue;
+                    }
+
                     PropertyData propertyData = new PropertyData();
 
                     propertyData.propertyInfo = properties[property];

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Runtime.CompilerServices;
 
 namespace XMLDocGen
 {
@@ -148,14 +149,9 @@ namespace XMLDocGen
             return _string == null || _string == "";
         }
 
-        public static bool MethodNameIsGetterOrSetter(string _name)
+        public static bool IsCompilerGenerated(this MemberInfo _member)
         {
-            return Regex.Match(_name, @"^get_").Success || Regex.Match(_name, @"^set_").Success;
-        }
-
-        public static bool FieldNameIsBackingField(string _name)
-        {
-            return Regex.Match(_name, @"k__BackingField").Success;
+            return _member.GetCustomAttribute(typeof(CompilerGeneratedAttribute)) != null;
         }
     }
 }
