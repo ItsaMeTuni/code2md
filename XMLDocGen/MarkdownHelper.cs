@@ -26,7 +26,7 @@ namespace XMLDocGen
         /// <param name="_text"></param>
         public void AddText(string _text)
         {
-            if(_text == "")
+            if(_text == "" || _text == null)
             {
                 return;
             }

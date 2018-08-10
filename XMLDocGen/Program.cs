@@ -223,7 +223,7 @@ namespace XMLDocGen
                     md.H2(h2);
                     md +=  method.summary;
 
-                    if (method.remarks != "")
+                    if (!method.remarks.IsEmpty())
                     {
                         md.H3("Remarks");
                         md += method.remarks;
@@ -264,14 +264,14 @@ namespace XMLDocGen
 
                     string desc = "";
 
-                    if(field.summary != null && field.summary != "")
+                    if (!field.summary.IsEmpty())
                     {
                         desc += "**Summary:** ";
                         desc += field.summary;
                         desc += "  ";
                     }
 
-                    if (field.remarks != null && field.remarks != "")
+                    if (!field.remarks.IsEmpty())
                     {
                         desc += "**Remarks:** ";
                         desc += field.remarks;

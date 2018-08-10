@@ -107,7 +107,6 @@ namespace XMLDocGen
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                Console.WriteLine();
                 if (Extractor.GetFieldName(_nodeList[i].Attributes["name"].Value) == _fieldName)
                 {
                     return _nodeList[i];
@@ -142,6 +141,11 @@ namespace XMLDocGen
             string genericArgs = string.Join(",", t.GetGenericArguments().Select(ta => ToGenericTypeString(ta)).ToArray());
 
             return genericTypeName + "<" + genericArgs + ">";
+        }
+
+        public static bool IsEmpty(this string _string)
+        {
+            return _string == null || _string == "";
         }
     }
 }
