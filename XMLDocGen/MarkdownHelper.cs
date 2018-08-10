@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace XMLDocGen
 {
+    public enum Alignment
+    {
+        Left,
+        Right,
+        Center
+    }
+
     class MarkdownHelper
     {
         /// <summary>
@@ -19,7 +26,21 @@ namespace XMLDocGen
         /// <param name="_text"></param>
         public void AddText(string _text)
         {
+            if(_text == "")
+            {
+                return;
+            }
+
             Value += _text + "\n";
+            EmptyLine();
+        }
+
+        /// <summary>
+        /// Adds an empty line to the text
+        /// </summary>
+        public void EmptyLine()
+        {
+            Value += "  \n";
         }
 
         /// <summary>
@@ -50,12 +71,26 @@ namespace XMLDocGen
         }
 
         /// <summary>
+        /// Create a level 4 header (i.e. ####_title)
+        /// </summary>
+        /// <param name="_title">Title of the header</param>
+        public void H4(string _title)
+        {
+            AddHeader(4, _title);
+        }
+
+        /// <summary>
         /// Create a header of level _i
         /// </summary>
         /// <param name="_i">Level of the header (i.e. how many "#" before the title)</param>
         /// <param name="_title">Title of the header</param>
         private void AddHeader(int _i, string _title)
         {
+            if(_title == "")
+            {
+                return;
+            }
+
             if(_i <= 0)
             {
                 throw new Exception();
@@ -72,7 +107,7 @@ namespace XMLDocGen
             AddText(str);
         }
 
-        public void CreateTable(string[] _headers, params string[][] _data)
+        public void CreateTable(string[] _headers, Alignment[] _alignments = null, params string[][] _data)
         {
             string table = "";
 
@@ -92,10 +127,20 @@ namespace XMLDocGen
             {
                 if (i > 0)
                 {
-                    table += " | ";
+                    table += "|";
+                }
+
+                if (_alignments == null || _alignments.Length <= i || _alignments[i] == Alignment.Left || _alignments[i] == Alignment.Center)
+                {
+                    table += ":";
                 }
 
                 table +="---";
+
+                if ((_alignments != null && _alignments.Length > i) && (_alignments[i] == Alignment.Right || _alignments[i] == Alignment.Center))
+                {
+                    table += ":";
+                }
             }
 
             table += "\n";

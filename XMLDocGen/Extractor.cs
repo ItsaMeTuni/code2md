@@ -19,6 +19,14 @@ namespace XMLDocGen
             return str;
         }
 
+        public static string GetFieldName(string _XMLsignature)
+        {
+            string str = _XMLsignature;
+            str = RemoveNamePrefix(str);
+
+            return str;
+        }
+
         /*
         private string[] ExtractParameterTypesFromMethodSigature(string _signature)
         {

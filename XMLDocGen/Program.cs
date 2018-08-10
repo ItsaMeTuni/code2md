@@ -32,6 +32,8 @@ namespace XMLDocGen
         public TypeInfo typeInfo;
 
         public List<MethodData> methods = new List<MethodData>();
+        public List<FieldData> fields = new List<FieldData>();
+        public List<PropertyData> properties = new List<PropertyData>();
         public string summary;
         public string remarks;
     }
@@ -39,6 +41,14 @@ namespace XMLDocGen
     public class FieldData
     {
         public FieldInfo fieldInfo;
+
+        public string summary;
+        public string remarks;
+    }
+
+    public class PropertyData
+    {
+        public PropertyInfo propertyInfo;
 
         public string summary;
         public string remarks;
@@ -144,6 +154,21 @@ namespace XMLDocGen
                     classData.methods.Add(methodData);
                 }
 
+                FieldInfo[] fields = types[type].GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+
+                for (int field = 0; field < fields.Length; field++)
+                {
+                    FieldData fieldData = new FieldData();
+
+                    fieldData.fieldInfo = fields[field];
+
+                    XmlNode fieldNode = _xml.FindFieldMemberWithName(types[type].FullName + "." + fields[field].Name);
+                    fieldData.summary = fieldNode?.SelectSingleNode("summary")?.InnerText.CleanString();
+                    fieldData.remarks = fieldNode?.SelectSingleNode("remarks")?.InnerText.CleanString();
+
+                    classData.fields.Add(fieldData);
+                }
+
                 classes.Add(classData);
             }
         }
@@ -181,7 +206,21 @@ namespace XMLDocGen
 
                 foreach (var method in c.methods)
                 {
-                    md.H2(method.methodInfo.Name);
+                    string h2 = method.methodInfo.ReturnType.GetTypeNameMarkdownText() + " " + method.methodInfo.Name + "(";
+
+                    for (int i = 0; i < method.parameters.Count; i++)
+                    {
+                        if(i > 0)
+                        {
+                            h2 += ", ";
+                        }
+
+                        h2 += method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText() + " " + method.parameters[i].parameterInfo.Name;
+                    }
+
+                    h2 += ")";
+
+                    md.H2(h2);
                     md +=  method.summary;
 
                     if (method.remarks != "")
@@ -192,18 +231,57 @@ namespace XMLDocGen
 
                     if (method.parameters.Count > 0)
                     {
+                        List<string> paramTypes = new List<string>();
                         List<string> paramNames = new List<string>();
                         List<string> paramDescriptions = new List<string>();
 
                         for (int i = 0; i < method.parameters.Count; i++)
                         {
+                            paramTypes.Add(method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText());
                             paramNames.Add(method.parameters[i].parameterInfo.Name);
                             paramDescriptions.Add(method.parameters[i].desc);
                         }
 
-                        md.CreateTable(new string[] { "Name", "Description" }, paramNames.ToArray(), paramDescriptions.ToArray());
+                        md.CreateTable(new string[] { "Type", "Parameter", "Description" }, 
+                            new Alignment[] { Alignment.Center, Alignment.Center, Alignment.Left}, 
+                            paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
                     }
                 }
+
+                if(c.fields.Count > 0)
+                {
+                    md.H2("Fields");
+                }
+
+                List<string> fieldTypes = new List<string>();
+                List<string> fieldNames = new List<string>();
+                List<string> fieldDescs = new List<string>();
+
+                foreach (var field in c.fields)
+                {
+                    fieldTypes.Add(field.fieldInfo.FieldType.GetTypeNameMarkdownText());
+                    fieldNames.Add(field.fieldInfo.Name);
+
+                    string desc = "";
+
+                    if(field.summary != null && field.summary != "")
+                    {
+                        desc += "**Summary:** ";
+                        desc += field.summary;
+                        desc += "  ";
+                    }
+
+                    if (field.remarks != null && field.remarks != "")
+                    {
+                        desc += "**Remarks:** ";
+                        desc += field.remarks;
+                        desc += "  ";
+                    }
+
+                    fieldDescs.Add(desc);
+                }
+
+                md.CreateTable(new string[] { "Type", "Name", "Description" }, null, fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
             }
 
             File.WriteAllText(outFolder + "/gen.md", md.Value);

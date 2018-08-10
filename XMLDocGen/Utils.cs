@@ -11,6 +11,13 @@ namespace XMLDocGen
 {
     public static class Utils
     {
+        static Dictionary<Type, string> customTypeNames = new Dictionary<Type, string>()
+        {
+            { typeof(String), "string" },
+            { typeof(Boolean), "bool" },
+            { typeof(Single), "float" },
+        };
+
         public static List<T> ListFieldToList<T, U>(this List<U> _list, string _fieldName)
         {
             List<T> outList = new List<T>();
@@ -70,11 +77,11 @@ namespace XMLDocGen
             return _in;
         }
 
-        public static XmlNode FindMethodMemberWithName(this XmlNodeList _nodeList, string _membeName)
+        public static XmlNode FindMethodMemberWithName(this XmlNodeList _nodeList, string _memberName)
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                if (Extractor.GetMethodName(_nodeList[i].Attributes["name"].Value) == _membeName)
+                if (Extractor.GetMethodName(_nodeList[i].Attributes["name"].Value) == _memberName)
                 {
                     return _nodeList[i];
                 }
@@ -94,6 +101,47 @@ namespace XMLDocGen
             }
 
             return null;
+        }
+
+        public static XmlNode FindFieldMemberWithName(this XmlNodeList _nodeList, string _fieldName)
+        {
+            for (int i = 0; i < _nodeList.Count; i++)
+            {
+                Console.WriteLine();
+                if (Extractor.GetFieldName(_nodeList[i].Attributes["name"].Value) == _fieldName)
+                {
+                    return _nodeList[i];
+                }
+            }
+
+            return null;
+        }
+
+        public static string GetTypeNameMarkdownText(this Type _type)
+        {
+            if(customTypeNames.ContainsKey(_type))
+            {
+                return customTypeNames[_type];
+            }
+            else
+            {
+                return ToGenericTypeString(_type);
+            }
+        }
+
+        public static string ToGenericTypeString(this Type t)
+        {
+            if (!t.IsGenericType)
+            {
+                return t.Name;
+            }
+            string genericTypeName = t.GetGenericTypeDefinition().Name;
+
+            genericTypeName = genericTypeName.Substring(0, genericTypeName.IndexOf('`'));
+
+            string genericArgs = string.Join(",", t.GetGenericArguments().Select(ta => ToGenericTypeString(ta)).ToArray());
+
+            return genericTypeName + "<" + genericArgs + ">";
         }
     }
 }
