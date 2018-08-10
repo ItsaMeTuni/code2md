@@ -19,7 +19,7 @@ string | bProp | **Summary:** It has second tier qualities   **Remarks:** HEYAFA
   
 ## Methods
   
-### bool Foo(string _a, Int32 _b, float _c)
+### **bool Foo(string _a, Int32 _b, float _c)**
   
 **Summary:** Does foo 
   
@@ -36,13 +36,13 @@ float | _c | or this
   
 ## Methods
   
-### string GetMethodName()
+### **string GetMethodName()**
   
-### string GetFieldName()
+### **string GetFieldName()**
   
-### string RemoveNamePrefix()
+### **string RemoveNamePrefix()**
   
-### string CleanString()
+### **string CleanString()**
   
 # XMLDocGen.Alignment
   
@@ -67,7 +67,7 @@ string | Value | **Summary:** Current value of the markdown text    | public get
   
 ## Methods
   
-### Void AddText(string _text)
+### **Void AddText(string _text)**
   
 **Summary:** Adds a line of text and a new line at the end 
   
@@ -76,11 +76,11 @@ Type | Parameter | Description
 string | _text | 
 
   
-### Void EmptyLine()
+### **Void EmptyLine()**
   
 **Summary:** Adds an empty line to the text 
   
-### Void H1(string _title)
+### **Void H1(string _title)**
   
 **Summary:** Create a level 1 header (i.e. #_title) 
   
@@ -89,7 +89,7 @@ Type | Parameter | Description
 string | _title | Title of the header
 
   
-### Void H2(string _title)
+### **Void H2(string _title)**
   
 **Summary:** Create a level 2 header (i.e. ##_title) 
   
@@ -98,7 +98,7 @@ Type | Parameter | Description
 string | _title | Title of the header
 
   
-### Void H3(string _title)
+### **Void H3(string _title)**
   
 **Summary:** Create a level 3 header (i.e. ###_title) 
   
@@ -107,7 +107,7 @@ Type | Parameter | Description
 string | _title | Title of the header
 
   
-### Void H4(string _title)
+### **Void H4(string _title)**
   
 **Summary:** Create a level 4 header (i.e. ####_title) 
   
@@ -116,7 +116,7 @@ Type | Parameter | Description
 string | _title | Title of the header
 
   
-### Void AddHeader(Int32 _i, string _title)
+### **Void AddHeader(Int32 _i, string _title)**
   
 **Summary:** Create a header of level _i 
   
@@ -126,9 +126,9 @@ Int32 | _i | Level of the header (i.e. how many "#" before the title)
 string | _title | Title of the header
 
   
-### Void CreateTable()
+### **Void CreateTable()**
   
-### MarkdownHelper op_Addition()
+### **MarkdownHelper op_Addition()**
   
 # XMLDocGen.ParameterData
   
@@ -209,29 +209,36 @@ string | outFolder |
   
 ## Methods
   
-### Void Main()
+### **Void Main()**
   
-### Void Generate()
+### **Void Generate()**
   
-### Void ReadAssembly(Assembly _assembly, XmlNodeList _xml)
+### **Void ReadAssembly(Assembly _assembly, XmlNodeList _xml)**
   
-**Summary:** Reads the assembly and creates class/method/field data used to generate the markdown 
+**Summary:** Reads the assembly and gathers together reflected information about types/members and their respective xml comments 
   
 Type | Parameter | Description
 :---:|:---:|:---
-Assembly | _assembly | 
-XmlNodeList | _xml | 
+Assembly | _assembly | The assembly to be read
+XmlNodeList | _xml | The assembly's xml documentation file
 
   
-### Void PrintEverything()
-  
-### Void ToMarkdown()
+### **Void ToMarkdown()**
   
 **Summary:** Converts the class list into a markdown page and outputs it into a file 
   
-### string GetXmlPath()
+### **string GetXmlPath()**
   
-### CommentData GetCommentData()
+**Summary:** Gets the path of the xml documentation file in xmlPath (can be a relative or an absolute path) 
+  
+### **CommentData GetCommentData(XmlNode _node)**
+  
+**Summary:** Extracts xml comment information into a CommentData given an xml node 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+XmlNode | _node | The node to extract the information from
+
   
 # XMLDocGen.Utils
   
@@ -244,27 +251,105 @@ Dictionary<Type,String> | customTypeNames |
   
 ## Methods
   
-### List<T> ListFieldToList()
+### **List<T> ListFieldToList()**
   
-### String[] ToArray()
+### **String[] ToArray()**
   
-### String[] RegexReplaceOnArray()
+### **String[] RegexReplaceOnArray(String[] _arr, string _regex, string _replace)**
   
-### String[] RegexMatchOnArray()
+**Summary:** Does the same as Regex.Replace but on a whole array. 
   
-### string CleanString()
+Type | Parameter | Description
+:---:|:---:|:---
+String[] | _arr | The array to operate on
+string | _regex | The regular expression
+string | _replace | What to put in the place of a regex match
+
   
-### XmlNode FindMethodMemberWithName()
+### **String[] RegexMatchOnArray(String[] _arr, string _regex)**
   
-### XmlNode FindMemberWithName()
+**Summary:** Gets the Regex Match value from each string on an array 
   
-### XmlNode FindFieldMemberWithName()
+Type | Parameter | Description
+:---:|:---:|:---
+String[] | _arr | The array to operate on
+string | _regex | The regular expression
+
   
-### string GetTypeNameMarkdownText()
+### **string CleanString(string _in)**
   
-### string ToGenericTypeString()
+**Summary:** Cleans a string (i.e. removes new lines, removes consecutive spacesm removes spaces at the start of the string) 
   
-### bool IsEmpty()
+Type | Parameter | Description
+:---:|:---:|:---
+string | _in | The string you want to clean
+
   
-### bool IsCompilerGenerated()
+### **XmlNode FindMethodMemberWithName(XmlNodeList _nodeList, string _methodName)**
+  
+**Summary:** Searches for a method xml node with name _methodName (ignoring parameters and prefix) 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+XmlNodeList | _nodeList | The xml node list to search in
+string | _methodName | The name of the method you're looking for
+
+  
+### **XmlNode FindMemberWithName(XmlNodeList _nodeList, string _memberName)**
+  
+**Summary:** Searches for an xml node with name _memberName 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+XmlNodeList | _nodeList | The xml node list to search in
+string | _memberName | The name of the member you're looking for
+
+  
+### **XmlNode FindFieldMemberWithName(XmlNodeList _nodeList, string _fieldName)**
+  
+**Summary:** Searches for a field xml node with name _fieldName (ignoring prefix) 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+XmlNodeList | _nodeList | The xml node list to search in
+string | _fieldName | The name of the field you're looking for
+
+  
+### **string GetTypeNameMarkdownText(Type _type)**
+  
+**Summary:** Gets _type's name (if there's a custom name for this type the custom name will be returned) 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+Type | _type | The _type you want to get the name from
+
+  
+### **string GetReadableGenericTypeName(Type _type)**
+  
+**Summary:** Gets the name of a generic type like List<string> instead of List`1 
+  
+**Remarks:** If _type is not a generic type then the output will be _type.Name 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+Type | _type | The generic type name
+
+  
+### **bool IsEmpty(string _string)**
+  
+**Summary:** Cehcks if a string is null or empty 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+string | _string | The string to check
+
+  
+### **bool IsCompilerGenerated(MemberInfo _member)**
+  
+**Summary:** Checks if a member was generated by the compiler 
+  
+Type | Parameter | Description
+:---:|:---:|:---
+MemberInfo | _member | Member to check
+
   

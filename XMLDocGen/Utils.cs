@@ -10,6 +10,9 @@ using System.Runtime.CompilerServices;
 
 namespace XMLDocGen
 {
+    /// <summary>
+    /// This class has miscellaneous helper functions.
+    /// </summary>
     public static class Utils
     {
         static Dictionary<Type, string> customTypeNames = new Dictionary<Type, string>()
@@ -45,6 +48,12 @@ namespace XMLDocGen
             return arr;
         }
 
+        /// <summary>
+        /// Does the same as Regex.Replace but on a whole array.
+        /// </summary>
+        /// <param name="_arr">The array to operate on</param>
+        /// <param name="_regex">The regular expression</param>
+        /// <param name="_replace">What to put in the place of a regex match</param>
         public static string[] RegexReplaceOnArray(string[] _arr, string _regex, string _replace)
         {
             string[] outArr = new string[_arr.Length];
@@ -57,6 +66,11 @@ namespace XMLDocGen
             return outArr;
         }
 
+        /// <summary>
+        /// Gets the Regex Match value from each string on an array
+        /// </summary>
+        /// <param name="_arr">The array to operate on</param>
+        /// <param name="_regex">The regular expression</param>
         public static string[] RegexMatchOnArray(string[] _arr, string _regex)
         {
             string[] outArr = new string[_arr.Length];
@@ -69,6 +83,10 @@ namespace XMLDocGen
             return outArr;
         }
 
+        /// <summary>
+        /// Cleans a string (i.e. removes new lines, removes consecutive spacesm removes spaces at the start of the string)
+        /// </summary>
+        /// <param name="_in">The string you want to clean</param>
         public static string CleanString(this string _in)
         {
             _in = Regex.Replace(_in, @"\t|\n|\r", ""); //Remove new lines
@@ -78,11 +96,16 @@ namespace XMLDocGen
             return _in;
         }
 
-        public static XmlNode FindMethodMemberWithName(this XmlNodeList _nodeList, string _memberName)
+        /// <summary>
+        /// Searches for a method xml node with name _methodName (ignoring parameters and prefix)
+        /// </summary>
+        /// <param name="_nodeList">The xml node list to search in</param>
+        /// <param name="_methodName">The name of the method you're looking for</param>
+        public static XmlNode FindMethodMemberWithName(this XmlNodeList _nodeList, string _methodName)
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                if (Extractor.GetMethodName(_nodeList[i].Attributes["name"].Value) == _memberName)
+                if (Extractor.GetMethodName(_nodeList[i].Attributes["name"].Value) == _methodName)
                 {
                     return _nodeList[i];
                 }
@@ -91,6 +114,11 @@ namespace XMLDocGen
             return null;
         }
 
+        /// <summary>
+        /// Searches for an xml node with name _memberName
+        /// </summary>
+        /// <param name="_nodeList">The xml node list to search in</param>
+        /// <param name="_memberName">The name of the member you're looking for</param>
         public static XmlNode FindMemberWithName(this XmlNodeList _nodeList, string _memberName)
         {
             for (int i = 0; i < _nodeList.Count; i++)
@@ -104,6 +132,11 @@ namespace XMLDocGen
             return null;
         }
 
+        /// <summary>
+        /// Searches for a field xml node with name _fieldName (ignoring prefix)
+        /// </summary>
+        /// <param name="_nodeList">The xml node list to search in</param>
+        /// <param name="_fieldName">The name of the field you're looking for</param>
         public static XmlNode FindFieldMemberWithName(this XmlNodeList _nodeList, string _fieldName)
         {
             for (int i = 0; i < _nodeList.Count; i++)
@@ -117,6 +150,10 @@ namespace XMLDocGen
             return null;
         }
 
+        /// <summary>
+        /// Gets _type's name (if there's a custom name for this type the custom name will be returned)
+        /// </summary>
+        /// <param name="_type">The _type you want to get the name from</param>
         public static string GetTypeNameMarkdownText(this Type _type)
         {
             if(customTypeNames.ContainsKey(_type))
@@ -125,30 +162,48 @@ namespace XMLDocGen
             }
             else
             {
-                return ToGenericTypeString(_type);
+                return GetReadableGenericTypeName(_type);
             }
         }
 
-        public static string ToGenericTypeString(this Type t)
+        /// <summary>
+        /// Gets the name of a generic type like List&lt;string&gt; instead of List`1
+        /// </summary>
+        /// <remarks>
+        /// If _type is not a generic type then the output will be _type.Name
+        /// </remarks>
+        /// <param name="_type">The generic type name</param>
+        /// <returns></returns>
+        private static string GetReadableGenericTypeName(Type _type)
         {
-            if (!t.IsGenericType)
+            if (!_type.IsGenericType)
             {
-                return t.Name;
+                return _type.Name;
             }
-            string genericTypeName = t.GetGenericTypeDefinition().Name;
+
+            string genericTypeName = _type.GetGenericTypeDefinition().Name;
 
             genericTypeName = genericTypeName.Substring(0, genericTypeName.IndexOf('`'));
 
-            string genericArgs = string.Join(",", t.GetGenericArguments().Select(ta => ToGenericTypeString(ta)).ToArray());
+            string genericArgs = string.Join(",", _type.GetGenericArguments().Select(ta => GetReadableGenericTypeName(ta)).ToArray());
 
             return genericTypeName + "<" + genericArgs + ">";
         }
 
+        /// <summary>
+        /// Cehcks if a string is null or empty
+        /// </summary>
+        /// <param name="_string">The string to check</param>
+        /// <returns></returns>
         public static bool IsEmpty(this string _string)
         {
             return _string == null || _string == "";
         }
 
+        /// <summary>
+        /// Checks if a member was generated by the compiler
+        /// </summary>
+        /// <param name="_member">Member to check</param>
         public static bool IsCompilerGenerated(this MemberInfo _member)
         {
             return _member.GetCustomAttribute(typeof(CompilerGeneratedAttribute)) != null;

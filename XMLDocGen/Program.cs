@@ -11,6 +11,9 @@ using System.Runtime.CompilerServices;
 
 namespace XMLDocGen
 {
+    /// <summary>
+    /// Contains information about a method's parameter (such as reflected info and description).
+    /// </summary>
     public class ParameterData
     {
         public ParameterInfo parameterInfo;
@@ -18,6 +21,9 @@ namespace XMLDocGen
         public string desc;
     }
 
+    /// <summary>
+    /// Contains information about a method (such as reflected info, parameters and xml comment).
+    /// </summary>
     public class MethodData
     {
         public MethodInfo methodInfo;
@@ -27,6 +33,10 @@ namespace XMLDocGen
         public CommentData commentData;
     }
 
+
+    /// <summary>
+    /// Contains information about a class (such as reflected info, members and xml comment).
+    /// </summary>
     public class ClassData
     {
         public TypeInfo typeInfo;
@@ -38,6 +48,10 @@ namespace XMLDocGen
         public CommentData commentData;
     }
 
+
+    /// <summary>
+    /// Contains information about a field (such as reflected info and xml comment).
+    /// </summary>
     public class FieldData
     {
         public FieldInfo fieldInfo;
@@ -45,6 +59,9 @@ namespace XMLDocGen
         public CommentData commentData;
     }
 
+    /// <summary>
+    /// Contains information about a property (such as reflected info and xml comment).
+    /// </summary>
     public class PropertyData
     {
         public PropertyInfo propertyInfo;
@@ -52,6 +69,9 @@ namespace XMLDocGen
         public CommentData commentData;
     }
 
+    /// <summary>
+    /// Contains information about an xml comment (such as summary and remarks).
+    /// </summary>
     public class CommentData
     {
         public string summary;
@@ -105,10 +125,10 @@ namespace XMLDocGen
         }
 
         /// <summary>
-        /// Reads the assembly and creates class/method/field data used to generate the markdown
+        /// Reads the assembly and gathers together reflected information about types/members and their respective xml comments
         /// </summary>
-        /// <param name="_assembly"></param>
-        /// <param name="_xml"></param>
+        /// <param name="_assembly">The assembly to be read</param>
+        /// <param name="_xml">The assembly's xml documentation file</param>
         void ReadAssembly(Assembly _assembly, XmlNodeList _xml)
         {
             Type[] types = _assembly.GetTypes();
@@ -198,25 +218,6 @@ namespace XMLDocGen
                 }
 
                 classes.Add(classData);
-            }
-        }
-
-        void PrintEverything()
-        {
-            foreach (var c in classes)
-            {
-                string str = "";
-
-                str += c.typeInfo.FullName + "\n";
-                str += "  " + c.commentData.summary + "\n";
-
-                foreach (var method in c.methods)
-                {
-                    str += "    " + method.methodInfo.Name + "\n";
-                    str += "        " + method.commentData.summary + "\n";
-                }
-
-                Console.WriteLine(str);
             }
         }
 
@@ -357,7 +358,7 @@ namespace XMLDocGen
 
                         methodSignature += ")";
 
-                        md.H3(methodSignature);
+                        md.H3("**" + methodSignature + "**");
 
                         if(!method.commentData.summary.IsEmpty())
                         {
@@ -393,6 +394,9 @@ namespace XMLDocGen
             File.WriteAllText(Environment.CurrentDirectory + outFolder + "/GeneratedExample.md", md.Value);
         }
 
+        /// <summary>
+        /// Gets the path of the xml documentation file in xmlPath (can be a relative or an absolute path)
+        /// </summary>
         string GetXmlPath()
         {
             if(File.Exists(xmlPath))
@@ -409,6 +413,11 @@ namespace XMLDocGen
             }
         }
 
+        /// <summary>
+        /// Extracts xml comment information into a CommentData given an xml node
+        /// </summary>
+        /// <param name="_node">The node to extract the information from</param>
+        /// <returns>The xml comment data populated with the xml's information</returns>
         CommentData GetCommentData(XmlNode _node)
         {
             CommentData commentData = new CommentData();
