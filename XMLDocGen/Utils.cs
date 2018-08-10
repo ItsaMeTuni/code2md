@@ -147,5 +147,15 @@ namespace XMLDocGen
         {
             return _string == null || _string == "";
         }
+
+        public static bool MethodNameIsGetterOrSetter(string _name)
+        {
+            return Regex.Match(_name, @"^get_").Success || Regex.Match(_name, @"^set_").Success;
+        }
+
+        public static bool FieldNameIsBackingField(string _name)
+        {
+            return Regex.Match(_name, @"k__BackingField").Success;
+        }
     }
 }

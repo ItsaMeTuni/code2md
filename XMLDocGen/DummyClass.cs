@@ -39,6 +39,22 @@ namespace XMLDocGen
         public string dafuq = "";
 
         /// <summary>
+        /// It has intersting qualities
+        /// </summary>
+        /// <remarks>
+        /// HEYA E HEYEHEYEHYEHYA E
+        /// </remarks>
+        public string aProp { get; set; }
+
+        /// <summary>
+        /// It has second tier qualities
+        /// </summary>
+        /// <remarks>
+        /// HEYAFASDFEAS
+        /// </remarks>
+        public string bProp { get; set; }
+
+        /// <summary>
         /// Does foo
         /// </summary>
         /// <remarks>

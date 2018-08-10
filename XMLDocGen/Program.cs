@@ -56,9 +56,9 @@ namespace XMLDocGen
 
     class Program
     {
-        const string inPath = "C:/Users/lucas/Source/Repos/XMLDocGen/XMLDocGen/bin/Debug/XMLDocGen.xml";
-        const string assemblyPath = "C:/Users/lucas/Source/Repos/XMLDocGen/bin/Debug/Assembly-CSharp.dll";
-        const string outFolder = "C:/Users/lucas/Source/Repos/XMLDocGen/";
+        static string xmlPath = "/XMLDocGen.xml";
+        static string assemblyPath = "/Assembly-CSharp.dll";
+        static string outFolder = "/../../../";
 
         List<ClassData> classes = new List<ClassData>();
 
@@ -73,7 +73,7 @@ namespace XMLDocGen
         void Generate()
         {
             XmlDocument xml = new XmlDocument();
-            xml.Load(inPath);
+            xml.Load(GetXmlPath());
 
             XmlNodeList members = xml.SelectNodes("doc/members/member");
 
@@ -118,14 +118,18 @@ namespace XMLDocGen
                 if (classNode != null)
                 {
                     classData.summary = classNode.SelectSingleNode("summary")?.InnerText.CleanString();
-                    classData.summary = classNode.SelectSingleNode("remarks")?.InnerText.CleanString();
+                    classData.remarks = classNode.SelectSingleNode("remarks")?.InnerText.CleanString();
                 }
 
 
                 MethodInfo[] methods = types[type].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-
                 for (int method = 0; method < methods.Length; method++)
                 {
+                    if(Utils.MethodNameIsGetterOrSetter(methods[method].Name))
+                    {
+                        continue;
+                    }
+
                     MethodData methodData = new MethodData();
                     methodData.methodInfo = methods[method];
                     
@@ -155,9 +159,13 @@ namespace XMLDocGen
                 }
 
                 FieldInfo[] fields = types[type].GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-
                 for (int field = 0; field < fields.Length; field++)
                 {
+                    if(Utils.FieldNameIsBackingField(fields[field].Name))
+                    {
+                        continue;
+                    }
+
                     FieldData fieldData = new FieldData();
 
                     fieldData.fieldInfo = fields[field];
@@ -167,6 +175,23 @@ namespace XMLDocGen
                     fieldData.remarks = fieldNode?.SelectSingleNode("remarks")?.InnerText.CleanString();
 
                     classData.fields.Add(fieldData);
+                }
+
+                PropertyInfo[] properties = types[type].GetProperties(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                for (int property = 0; property < properties.Length; property++)
+                {
+                    PropertyData propertyData = new PropertyData();
+
+                    propertyData.propertyInfo = properties[property];
+
+                    XmlNode propertyNode = _xml.FindFieldMemberWithName(types[type].FullName + "." + properties[property].Name);
+                    if (propertyNode != null)
+                    {
+                        propertyData.summary = propertyNode.SelectSingleNode("summary")?.InnerText.CleanString();
+                        propertyData.remarks = propertyNode.SelectSingleNode("remarks")?.InnerText.CleanString();
+                    }
+
+                    classData.properties.Add(propertyData);
                 }
 
                 classes.Add(classData);
@@ -210,7 +235,7 @@ namespace XMLDocGen
 
                     for (int i = 0; i < method.parameters.Count; i++)
                     {
-                        if(i > 0)
+                        if (i > 0)
                         {
                             h2 += ", ";
                         }
@@ -221,7 +246,7 @@ namespace XMLDocGen
                     h2 += ")";
 
                     md.H2(h2);
-                    md +=  method.summary;
+                    md += method.summary;
 
                     if (!method.remarks.IsEmpty())
                     {
@@ -242,170 +267,135 @@ namespace XMLDocGen
                             paramDescriptions.Add(method.parameters[i].desc);
                         }
 
-                        md.CreateTable(new string[] { "Type", "Parameter", "Description" }, 
-                            new Alignment[] { Alignment.Center, Alignment.Center, Alignment.Left}, 
+                        md.CreateTable(new string[] { "Type", "Parameter", "Description" },
+                            new Alignment[] { Alignment.Center, Alignment.Center, Alignment.Left },
                             paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
                     }
                 }
 
-                if(c.fields.Count > 0)
+                if (c.fields.Count > 0)
                 {
                     md.H2("Fields");
-                }
+                
+                    List<string> fieldTypes = new List<string>();
+                    List<string> fieldNames = new List<string>();
+                    List<string> fieldDescs = new List<string>();
 
-                List<string> fieldTypes = new List<string>();
-                List<string> fieldNames = new List<string>();
-                List<string> fieldDescs = new List<string>();
-
-                foreach (var field in c.fields)
-                {
-                    fieldTypes.Add(field.fieldInfo.FieldType.GetTypeNameMarkdownText());
-                    fieldNames.Add(field.fieldInfo.Name);
-
-                    string desc = "";
-
-                    if (!field.summary.IsEmpty())
+                    foreach (var field in c.fields)
                     {
-                        desc += "**Summary:** ";
-                        desc += field.summary;
-                        desc += "  ";
+                        fieldTypes.Add(field.fieldInfo.FieldType.GetTypeNameMarkdownText());
+                        fieldNames.Add(field.fieldInfo.Name);
+
+                        string desc = "";
+
+                        if (!field.summary.IsEmpty())
+                        {
+                            desc += "**Summary:** ";
+                            desc += field.summary;
+                            desc += "  ";
+                        }
+
+                        if (!field.remarks.IsEmpty())
+                        {
+                            desc += "**Remarks:** ";
+                            desc += field.remarks;
+                            desc += "  ";
+                        }
+
+                        fieldDescs.Add(desc);
                     }
 
-                    if (!field.remarks.IsEmpty())
+                    md.CreateTable(new string[] { "Type", "Name", "Description" }, null, fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
+                }
+
+                if (c.properties.Count > 0)
+                {
+                    md.H2("Properties");
+                
+                    List<string> propertyTypes = new List<string>();
+                    List<string> propertyNames = new List<string>();
+                    List<string> propertyDescs = new List<string>();
+                    List<string> propertyAcessors = new List<string>();
+
+                    foreach (var property in c.properties)
                     {
-                        desc += "**Remarks:** ";
-                        desc += field.remarks;
-                        desc += "  ";
+                        propertyTypes.Add(property.propertyInfo.PropertyType.GetTypeNameMarkdownText());
+                        propertyNames.Add(property.propertyInfo.Name);
+
+                        string desc = "";
+
+                        if (!property.summary.IsEmpty())
+                        {
+                            desc += "**Summary:** ";
+                            desc += property.summary;
+                            desc += "  ";
+                        }
+
+                        if (!property.remarks.IsEmpty())
+                        {
+                            desc += "**Remarks:** ";
+                            desc += property.remarks;
+                            desc += "  ";
+                        }
+
+                        propertyDescs.Add(desc);
+
+                        string acessors = "";
+
+                        if (property.propertyInfo.CanRead)
+                        {
+                            if(property.propertyInfo.GetMethod.IsPublic)
+                            {
+                                acessors += "public ";
+                            }
+
+                            if (property.propertyInfo.GetMethod.IsPrivate)
+                            {
+                                acessors += "private ";
+                            }
+
+                            acessors +=  "get; ";
+                        }
+
+                        if (property.propertyInfo.CanWrite)
+                        {
+                            if (property.propertyInfo.SetMethod.IsPublic)
+                            {
+                                acessors += "public ";
+                            }
+
+                            if (property.propertyInfo.SetMethod.IsPrivate)
+                            {
+                                acessors += "private ";
+                            }
+
+                            acessors += "set; ";
+                        }
+
+                        propertyAcessors.Add(acessors);
                     }
 
-                    fieldDescs.Add(desc);
-                }
-
-                md.CreateTable(new string[] { "Type", "Name", "Description" }, null, fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
-            }
-
-            File.WriteAllText(outFolder + "/GeneratedExample.md", md.Value);
-        }
-
-        /*
-        OldComment MakeComment(XmlNode _node)
-        {
-            OldComment comment = new OldComment();
-
-            comment.type = GetCommentTypeFromName(_node.Attributes["name"].Value);
-            //comment.name = RemoveNamePrefix(_node.Attributes["name"].Value);
-
-            try
-            {
-                //comment.summary = CleanString(_node.SelectSingleNode("summary").InnerText);
-            }
-            catch
-            {
-                comment.summary = null;
-            }
-
-            try
-            {
-                comment.remarks = _node.SelectSingleNode("remarks").Value;
-            }
-            catch
-            {
-                comment.remarks = null;
-            }
-
-            comment.parameters = new List<ParameterData>();
-            XmlNodeList parameters = _node.SelectNodes("param");
-
-            string[] parameterTypes = Regex.Matches(comment.name, @"(\(|\,)[a-z A-Z 0-9 \. \[\]]*").ToArray();
-            parameterTypes = Utils.RegexReplaceOnArray(parameterTypes, @"\(|\,|\)", "");
-            parameterTypes = Utils.RegexMatchOnArray(parameterTypes, @"([^\.]*)$");
-
-            for (int i = 0; i < parameters.Count; i++)
-            {
-                ParameterData param = new ParameterData();
-
-                param.name = parameters[i].Attributes["name"].Value;
-                param.desc = parameters[i].InnerText;
-                param.type = parameterTypes[i];
-
-                comment.parameters.Add(param);
-            }
-
-            return comment;
-        }
-
-        void GenerateMarkdown(List<OldComment> _comments)
-        {
-            using (FileStream fileStream = new FileStream(outFolder + "/gen.md", FileMode.OpenOrCreate))
-            {
-                using (StreamWriter streamWriter = new StreamWriter(fileStream))
-                {
-                    string str = ToMarkdown(_comments);
-
-                    streamWriter.Write(str);
+                    md.CreateTable(new string[] { "Type", "Name", "Description", "Acessors" }, null, propertyTypes.ToArray(), propertyNames.ToArray(), propertyDescs.ToArray(), propertyAcessors.ToArray());
                 }
             }
+
+            File.WriteAllText(Environment.CurrentDirectory + outFolder + "/GeneratedExample.md", md.Value);
         }
 
-        string ToMarkdown(List<OldComment> _comments)
+        string GetXmlPath()
         {
-            string str = "";
-
-            for (int i = 0; i < _comments.Count; i++)
+            if(File.Exists(xmlPath))
             {
-                str += "# " + _comments[i].name + " (" + _comments[i].type.ToString() + ")" + "\n";
-                str += _comments[i].summary + "\n";
-
-                str += "\n";
-
-                if (_comments[i].type == CommentType.Method)
-                {
-                    str += MarkdownHelper.CreateTable(
-                        new string[] { "Parameter", "Type", "Description" },
-                        _comments[i].parameters.ListFieldToList<string, ParameterData>("name").ToArray(),
-                        _comments[i].parameters.ListFieldToList<string, ParameterData>("type").ToArray(),
-                        _comments[i].parameters.ListFieldToList<string, ParameterData>("desc").ToArray());
-                }
-
-                str += "\n";
+                return xmlPath;
             }
-
-            return str;
-        }
-
-
-
-        CommentType GetCommentTypeFromName(string _name)
-        {
-            if (_name[0] == 'T')
+            else if (File.Exists(Environment.CurrentDirectory + xmlPath))
             {
-                return CommentType.Type;
-            }
-            else if (_name[0] == 'M')
-            {
-                return CommentType.Method;
-            }
-            else if (_name[0] == 'S')
-            {
-                return CommentType.Struct;
-            }
-            else if (_name[0] == 'P')
-            {
-                return CommentType.Property;
-            }
-            else if (_name[0] == 'E')
-            {
-                return CommentType.Enum;
-            }
-            else if (_name[0] == 'F')
-            {
-                return CommentType.Field;
+                return Environment.CurrentDirectory + xmlPath;
             }
             else
             {
                 throw new Exception();
             }
         }
-        */
     }
 }

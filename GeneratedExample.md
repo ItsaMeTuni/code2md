@@ -24,6 +24,14 @@ string | fubar | **Summary:** WHAT EVER   **Remarks:** SuRR, wHy N00t?
 string | dafuq | **Summary:** I'm lost already   **Remarks:** LorEm ipSuM DolOR sIT aMeT   
 
   
+## Properties
+  
+Type | Name | Description | Acessors
+:---|:---|:---|:---
+string | aProp | **Summary:** It has intersting qualities   **Remarks:** HEYA E HEYEHEYEHYEHYA E    | public get; public set; 
+string | bProp | **Summary:** It has second tier qualities   **Remarks:** HEYAFASDFEAS    | public get; public set; 
+
+  
 # XMLDocGen.Extractor
   
 ## string GetMethodName()
@@ -33,10 +41,6 @@ string | dafuq | **Summary:** I'm lost already   **Remarks:** LorEm ipSuM DolOR 
 ## string RemoveNamePrefix()
   
 ## string CleanString()
-  
-Type | Name | Description
-:---|:---|:---
-
   
 # XMLDocGen.Alignment
   
@@ -51,10 +55,6 @@ Alignment | Center |
 
   
 # XMLDocGen.MarkdownHelper
-  
-## string get_Value()
-  
-## Void set_Value()
   
 ## Void AddText(string _text)
   
@@ -119,11 +119,11 @@ string | _title | Title of the header
   
 ## MarkdownHelper op_Addition()
   
-## Fields
+## Properties
   
-Type | Name | Description
-:---|:---|:---
-string | <Value>k__BackingField | 
+Type | Name | Description | Acessors
+:---|:---|:---|:---
+string | Value | **Summary:** Current value of the markdown text    | public get; private set; 
 
   
 # XMLDocGen.ParameterData
@@ -207,12 +207,14 @@ XmlNodeList | _xml |
   
 Converts the class list into a markdown page and outputs it into a file 
   
+## string GetXmlPath()
+  
 ## Fields
   
 Type | Name | Description
 :---|:---|:---
 List<ClassData> | classes | 
-string | inPath | 
+string | xmlPath | 
 string | assemblyPath | 
 string | outFolder | 
 
@@ -240,6 +242,10 @@ string | outFolder |
 ## string ToGenericTypeString()
   
 ## bool IsEmpty()
+  
+## bool MethodNameIsGetterOrSetter()
+  
+## bool FieldNameIsBackingField()
   
 ## Fields
   
