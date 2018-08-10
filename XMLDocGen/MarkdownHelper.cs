@@ -188,6 +188,11 @@ namespace XMLDocGen
             return link;
         }
 
+        public static string CreateCode(string _code)
+        {
+            return "`" + _code + "`";
+        }
+
         public static MarkdownHelper operator +(MarkdownHelper _l, string _r)
         {
             _l.AddText(_r);

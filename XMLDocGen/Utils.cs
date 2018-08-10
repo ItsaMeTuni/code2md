@@ -20,6 +20,7 @@ namespace XMLDocGen
             { typeof(String), "string" },
             { typeof(Boolean), "bool" },
             { typeof(Single), "float" },
+            { typeof(Int32), "int" },
         };
 
         public static List<T> ListFieldToList<T, U>(this List<U> _list, string _fieldName)
@@ -166,6 +167,8 @@ namespace XMLDocGen
             {
                 str =  GetReadableGenericTypeName(_type);
             }
+
+            str = MarkdownHelper.CreateCode(str);
 
             if(_type.IsFromAssembly(Program.assembly))
             {
