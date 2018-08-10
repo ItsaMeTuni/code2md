@@ -148,9 +148,7 @@ Type | Name | Description
 :---|:---|:---
 MethodInfo | methodInfo | 
 List<ParameterData> | parameters | 
-string | returns | 
-string | remarks | 
-string | summary | 
+CommentData | commentData | 
 
   
 # XMLDocGen.ClassData
@@ -163,8 +161,7 @@ TypeInfo | typeInfo |
 List<MethodData> | methods | 
 List<FieldData> | fields | 
 List<PropertyData> | properties | 
-string | summary | 
-string | remarks | 
+CommentData | commentData | 
 
   
 # XMLDocGen.FieldData
@@ -174,8 +171,7 @@ string | remarks |
 Type | Name | Description
 :---|:---|:---
 FieldInfo | fieldInfo | 
-string | summary | 
-string | remarks | 
+CommentData | commentData | 
 
   
 # XMLDocGen.PropertyData
@@ -185,8 +181,18 @@ string | remarks |
 Type | Name | Description
 :---|:---|:---
 PropertyInfo | propertyInfo | 
+CommentData | commentData | 
+
+  
+# XMLDocGen.CommentData
+  
+## Fields
+  
+Type | Name | Description
+:---|:---|:---
 string | summary | 
 string | remarks | 
+string | returns | 
 
   
 # XMLDocGen.Program
@@ -224,6 +230,8 @@ XmlNodeList | _xml |
 **Summary:** Converts the class list into a markdown page and outputs it into a file 
   
 ### string GetXmlPath()
+  
+### CommentData GetCommentData()
   
 # XMLDocGen.Utils
   

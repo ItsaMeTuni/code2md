@@ -23,9 +23,8 @@ namespace XMLDocGen
         public MethodInfo methodInfo;
 
         public List<ParameterData> parameters = new List<ParameterData>();
-        public string returns;
-        public string remarks;
-        public string summary;
+
+        public CommentData commentData;
     }
 
     public class ClassData
@@ -35,24 +34,29 @@ namespace XMLDocGen
         public List<MethodData> methods = new List<MethodData>();
         public List<FieldData> fields = new List<FieldData>();
         public List<PropertyData> properties = new List<PropertyData>();
-        public string summary;
-        public string remarks;
+
+        public CommentData commentData;
     }
 
     public class FieldData
     {
         public FieldInfo fieldInfo;
 
-        public string summary;
-        public string remarks;
+        public CommentData commentData;
     }
 
     public class PropertyData
     {
         public PropertyInfo propertyInfo;
 
+        public CommentData commentData;
+    }
+
+    public class CommentData
+    {
         public string summary;
         public string remarks;
+        public string returns;
     }
 
     class Program
@@ -121,12 +125,7 @@ namespace XMLDocGen
                 classData.typeInfo = types[type].GetTypeInfo();
 
                 XmlNode classNode = _xml.FindMemberWithName(types[type].FullName);
-                if (classNode != null)
-                {
-                    classData.summary = classNode.SelectSingleNode("summary")?.InnerText.CleanString();
-                    classData.remarks = classNode.SelectSingleNode("remarks")?.InnerText.CleanString();
-                }
-
+                classData.commentData = GetCommentData(classNode);
 
                 MethodInfo[] methods = types[type].GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
                 for (int method = 0; method < methods.Length; method++)
@@ -140,13 +139,10 @@ namespace XMLDocGen
                     methodData.methodInfo = methods[method];
                     
                     XmlNode methodNode = _xml.FindMethodMemberWithName(types[type].FullName + "." + methods[method].Name);
+                    methodData.commentData = GetCommentData(methodNode);
+
                     if (methodNode != null)
                     {
-                        methodData.summary = methodNode.SelectSingleNode("summary")?.InnerText.CleanString();
-                        methodData.remarks = methodNode.SelectSingleNode("remarks")?.InnerText.CleanString();
-                        methodData.returns = methodNode.SelectSingleNode("returns")?.InnerText.CleanString();
-
-
                         ParameterInfo[] parameters = methods[method].GetParameters();
 
                         XmlNodeList parameterNodes = methodNode.SelectNodes("param");
@@ -178,8 +174,7 @@ namespace XMLDocGen
                     fieldData.fieldInfo = fields[field];
 
                     XmlNode fieldNode = _xml.FindFieldMemberWithName(types[type].FullName + "." + fields[field].Name);
-                    fieldData.summary = fieldNode?.SelectSingleNode("summary")?.InnerText.CleanString();
-                    fieldData.remarks = fieldNode?.SelectSingleNode("remarks")?.InnerText.CleanString();
+                    fieldData.commentData = GetCommentData(fieldNode);
 
                     classData.fields.Add(fieldData);
                 }
@@ -197,11 +192,7 @@ namespace XMLDocGen
                     propertyData.propertyInfo = properties[property];
 
                     XmlNode propertyNode = _xml.FindFieldMemberWithName(types[type].FullName + "." + properties[property].Name);
-                    if (propertyNode != null)
-                    {
-                        propertyData.summary = propertyNode.SelectSingleNode("summary")?.InnerText.CleanString();
-                        propertyData.remarks = propertyNode.SelectSingleNode("remarks")?.InnerText.CleanString();
-                    }
+                    propertyData.commentData = GetCommentData(propertyNode);
 
                     classData.properties.Add(propertyData);
                 }
@@ -217,12 +208,12 @@ namespace XMLDocGen
                 string str = "";
 
                 str += c.typeInfo.FullName + "\n";
-                str += "  " + c.summary + "\n";
+                str += "  " + c.commentData.summary + "\n";
 
                 foreach (var method in c.methods)
                 {
                     str += "    " + method.methodInfo.Name + "\n";
-                    str += "        " + method.summary + "\n";
+                    str += "        " + method.commentData.summary + "\n";
                 }
 
                 Console.WriteLine(str);
@@ -239,7 +230,7 @@ namespace XMLDocGen
             foreach (var c in classes)
             {
                 md.H1(c.typeInfo.FullName);
-                md += c.summary;
+                md += c.commentData.summary;
 
                 if (c.fields.Count > 0)
                 {
@@ -256,17 +247,17 @@ namespace XMLDocGen
 
                         string desc = "";
 
-                        if (!field.summary.IsEmpty())
+                        if (!field.commentData.summary.IsEmpty())
                         {
                             desc += "**Summary:** ";
-                            desc += field.summary;
+                            desc += field.commentData.summary;
                             desc += "  ";
                         }
 
-                        if (!field.remarks.IsEmpty())
+                        if (!field.commentData.remarks.IsEmpty())
                         {
                             desc += "**Remarks:** ";
-                            desc += field.remarks;
+                            desc += field.commentData.remarks;
                             desc += "  ";
                         }
 
@@ -292,17 +283,17 @@ namespace XMLDocGen
 
                         string desc = "";
 
-                        if (!property.summary.IsEmpty())
+                        if (!property.commentData.summary.IsEmpty())
                         {
                             desc += "**Summary:** ";
-                            desc += property.summary;
+                            desc += property.commentData.summary;
                             desc += "  ";
                         }
 
-                        if (!property.remarks.IsEmpty())
+                        if (!property.commentData.remarks.IsEmpty())
                         {
                             desc += "**Remarks:** ";
-                            desc += property.remarks;
+                            desc += property.commentData.remarks;
                             desc += "  ";
                         }
 
@@ -368,14 +359,14 @@ namespace XMLDocGen
 
                         md.H3(methodSignature);
 
-                        if(!method.summary.IsEmpty())
+                        if(!method.commentData.summary.IsEmpty())
                         {
-                            md += "**Summary:** " + method.summary;
+                            md += "**Summary:** " + method.commentData.summary;
                         }
 
-                        if (!method.remarks.IsEmpty())
+                        if (!method.commentData.remarks.IsEmpty())
                         {
-                            md += "**Remarks:** " + method.remarks;
+                            md += "**Remarks:** " + method.commentData.remarks;
                         }
 
                         if (method.parameters.Count > 0)
@@ -416,6 +407,19 @@ namespace XMLDocGen
             {
                 throw new Exception();
             }
+        }
+
+        CommentData GetCommentData(XmlNode _node)
+        {
+            CommentData commentData = new CommentData();
+
+            if (_node != null)
+            {
+                commentData.summary = _node.SelectSingleNode("summary")?.InnerText.CleanString();
+                commentData.remarks = _node.SelectSingleNode("remarks")?.InnerText.CleanString();
+            }
+
+            return commentData;
         }
     }
 }
