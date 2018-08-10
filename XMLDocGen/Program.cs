@@ -229,50 +229,6 @@ namespace XMLDocGen
                 md.H1(c.typeInfo.FullName);
                 md += c.summary;
 
-                foreach (var method in c.methods)
-                {
-                    string h2 = method.methodInfo.ReturnType.GetTypeNameMarkdownText() + " " + method.methodInfo.Name + "(";
-
-                    for (int i = 0; i < method.parameters.Count; i++)
-                    {
-                        if (i > 0)
-                        {
-                            h2 += ", ";
-                        }
-
-                        h2 += method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText() + " " + method.parameters[i].parameterInfo.Name;
-                    }
-
-                    h2 += ")";
-
-                    md.H2(h2);
-                    md += method.summary;
-
-                    if (!method.remarks.IsEmpty())
-                    {
-                        md.H3("Remarks");
-                        md += method.remarks;
-                    }
-
-                    if (method.parameters.Count > 0)
-                    {
-                        List<string> paramTypes = new List<string>();
-                        List<string> paramNames = new List<string>();
-                        List<string> paramDescriptions = new List<string>();
-
-                        for (int i = 0; i < method.parameters.Count; i++)
-                        {
-                            paramTypes.Add(method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText());
-                            paramNames.Add(method.parameters[i].parameterInfo.Name);
-                            paramDescriptions.Add(method.parameters[i].desc);
-                        }
-
-                        md.CreateTable(new string[] { "Type", "Parameter", "Description" },
-                            new Alignment[] { Alignment.Center, Alignment.Center, Alignment.Left },
-                            paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
-                    }
-                }
-
                 if (c.fields.Count > 0)
                 {
                     md.H2("Fields");
@@ -376,6 +332,58 @@ namespace XMLDocGen
                     }
 
                     md.CreateTable(new string[] { "Type", "Name", "Description", "Acessors" }, null, propertyTypes.ToArray(), propertyNames.ToArray(), propertyDescs.ToArray(), propertyAcessors.ToArray());
+                }
+
+                if (c.methods.Count > 0)
+                {
+                    md.H2("Methods");
+
+                    foreach (var method in c.methods)
+                    {
+                        string methodSignature = method.methodInfo.ReturnType.GetTypeNameMarkdownText() + " " + method.methodInfo.Name + "(";
+
+                        for (int i = 0; i < method.parameters.Count; i++)
+                        {
+                            if (i > 0)
+                            {
+                                methodSignature += ", ";
+                            }
+
+                            methodSignature += method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText() + " " + method.parameters[i].parameterInfo.Name;
+                        }
+
+                        methodSignature += ")";
+
+                        md.H3(methodSignature);
+
+                        if(!method.summary.IsEmpty())
+                        {
+                            md += "**Summary:** " + method.summary;
+                        }
+
+                        if (!method.remarks.IsEmpty())
+                        {
+                            md += "**Remarks:** " + method.remarks;
+                        }
+
+                        if (method.parameters.Count > 0)
+                        {
+                            List<string> paramTypes = new List<string>();
+                            List<string> paramNames = new List<string>();
+                            List<string> paramDescriptions = new List<string>();
+
+                            for (int i = 0; i < method.parameters.Count; i++)
+                            {
+                                paramTypes.Add(method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText());
+                                paramNames.Add(method.parameters[i].parameterInfo.Name);
+                                paramDescriptions.Add(method.parameters[i].desc);
+                            }
+
+                            md.CreateTable(new string[] { "Type", "Parameter", "Description" },
+                                new Alignment[] { Alignment.Center, Alignment.Center, Alignment.Left },
+                                paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
+                        }
+                    }
                 }
             }
 
