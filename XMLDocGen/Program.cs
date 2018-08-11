@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Configuration;
 
 namespace XMLDocGen
 {
@@ -81,9 +82,9 @@ namespace XMLDocGen
 
     class Program
     {
-        static string xmlPath = "/XMLDocGen.xml";
-        static string assemblyPath = "/Assembly-CSharp.dll";
-        static string outFolder = "/../../../";
+        static string xmlPath = "";
+        static string assemblyPath = "";
+        static string outFolder = "";
 
         static List<ClassData> classes = new List<ClassData>();
         public static Assembly assembly;
@@ -99,6 +100,8 @@ namespace XMLDocGen
 
         void Generate()
         {
+            LoadConfigs();
+
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(GetXmlPath());
 
@@ -432,6 +435,17 @@ namespace XMLDocGen
             }
 
             return commentData;
+        }
+
+        void LoadConfigs()
+        {
+            assemblyPath = ConfigurationManager.AppSettings["assemblyFilePath"];
+            xmlPath = ConfigurationManager.AppSettings["xmlFilePath"];
+            outFolder = ConfigurationManager.AppSettings["outputFolderPath"];
+
+            Console.WriteLine("assemblyPath: " + assemblyPath);
+            Console.WriteLine("xmlPath: " + xmlPath);
+            Console.WriteLine("outFolder: " + outFolder);
         }
     }
 }

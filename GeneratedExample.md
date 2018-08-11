@@ -240,6 +240,8 @@ Type | Parameter | Description
 `XmlNode` | _node | The node to extract the information from
 
   
+### **`Void` LoadConfigs()**
+  
 # XMLDocGen.Utils
   
 ## Fields
