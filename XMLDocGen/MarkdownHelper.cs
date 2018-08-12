@@ -80,6 +80,21 @@ namespace XMLDocGen
             AddHeader(4, _title);
         }
 
+        public void Space1()
+        {
+            AddSpace(1);
+        }
+
+        public void Space2()
+        {
+            AddSpace(2);
+        }
+
+        public void Space3()
+        {
+            AddSpace(3);
+        }
+
         /// <summary>
         /// Create a header of level _i
         /// </summary>
@@ -106,6 +121,18 @@ namespace XMLDocGen
             str += " " + _title;
 
             AddText(str);
+        }
+
+        private void AddSpace(int _i)
+        {
+            string str = "";
+
+            for (int i = 0; i < _i; i++)
+            {
+                str += "<br/> \n";
+            }
+
+            Value += str + "\n";
         }
 
         public void CreateTable(string[] _headers, Alignment[] _alignments = null, params string[][] _data)

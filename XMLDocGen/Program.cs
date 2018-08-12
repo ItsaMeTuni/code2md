@@ -272,6 +272,8 @@ namespace XMLDocGen
                     }
 
                     md.CreateTable(new string[] { "Modifiers","Type", "Name", "Description" }, null, fieldModifiers.ToArray(), fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
+
+                    md.Space2();
                 }
 
                 if (c.properties.Count > 0)
@@ -342,6 +344,8 @@ namespace XMLDocGen
                     }
 
                     md.CreateTable(new string[] { "Type", "Name", "Description", "Acessors" }, null, propertyTypes.ToArray(), propertyNames.ToArray(), propertyDescs.ToArray(), propertyAcessors.ToArray());
+
+                    md.Space2();
                 }
 
                 if (c.methods.Count > 0)
@@ -395,7 +399,11 @@ namespace XMLDocGen
                                 new Alignment[] { Alignment.Left, Alignment.Left, Alignment.Center, Alignment.Left },
                                 paramModifiers.ToArray(), paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
                         }
+
+                        md.Space1();
                     }
+
+                    md.Space2();
                 }
             }
 
