@@ -14,7 +14,7 @@ namespace XMLDocGen
         Center
     }
 
-    class MarkdownHelper
+    class MarkdownBuilder
     {
         /// <summary>
         /// Current value of the markdown text
@@ -220,7 +220,7 @@ namespace XMLDocGen
             return "`" + _code + "`";
         }
 
-        public static MarkdownHelper operator +(MarkdownHelper _l, string _r)
+        public static MarkdownBuilder operator +(MarkdownBuilder _l, string _r)
         {
             _l.AddText(_r);
             return _l;
