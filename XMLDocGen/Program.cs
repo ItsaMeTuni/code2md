@@ -34,7 +34,6 @@ namespace XMLDocGen
         public CommentData commentData;
     }
 
-
     /// <summary>
     /// Contains information about a class (such as reflected info, members and xml comment).
     /// </summary>
@@ -48,7 +47,6 @@ namespace XMLDocGen
 
         public CommentData commentData;
     }
-
 
     /// <summary>
     /// Contains information about a field (such as reflected info and xml comment).
@@ -242,13 +240,15 @@ namespace XMLDocGen
                 if (c.fields.Count > 0)
                 {
                     md.H2("Fields");
-                
+
+                    List<string> fieldModifiers = new List<string>();
                     List<string> fieldTypes = new List<string>();
                     List<string> fieldNames = new List<string>();
                     List<string> fieldDescs = new List<string>();
 
                     foreach (var field in c.fields)
                     {
+                        fieldModifiers.Add(field.fieldInfo.GetModifiersString());
                         fieldTypes.Add(field.fieldInfo.FieldType.GetTypeNameMarkdownText());
                         fieldNames.Add(field.fieldInfo.Name);
 
@@ -271,7 +271,7 @@ namespace XMLDocGen
                         fieldDescs.Add(desc);
                     }
 
-                    md.CreateTable(new string[] { "Type", "Name", "Description" }, null, fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
+                    md.CreateTable(new string[] { "Modifiers","Type", "Name", "Description" }, null, fieldModifiers.ToArray(), fieldTypes.ToArray(), fieldNames.ToArray(), fieldDescs.ToArray());
                 }
 
                 if (c.properties.Count > 0)
@@ -350,7 +350,7 @@ namespace XMLDocGen
 
                     foreach (var method in c.methods)
                     {
-                        string methodSignature = method.methodInfo.ReturnType.GetTypeNameMarkdownText() + " " + method.methodInfo.Name + "(";
+                        string methodSignature = method.methodInfo.GetModfiersString() + method.methodInfo.ReturnType.GetTypeNameMarkdownText() + " " + method.methodInfo.Name + "(";
 
                         for (int i = 0; i < method.parameters.Count; i++)
                         {
@@ -378,20 +378,22 @@ namespace XMLDocGen
 
                         if (method.parameters.Count > 0)
                         {
+                            List<string> paramModifiers = new List<string>();
                             List<string> paramTypes = new List<string>();
                             List<string> paramNames = new List<string>();
                             List<string> paramDescriptions = new List<string>();
 
                             for (int i = 0; i < method.parameters.Count; i++)
                             {
+                                paramModifiers.Add(method.parameters[i].parameterInfo.GetModifiersString());
                                 paramTypes.Add(method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText());
                                 paramNames.Add(method.parameters[i].parameterInfo.Name);
                                 paramDescriptions.Add(method.parameters[i].desc);
                             }
 
-                            md.CreateTable(new string[] { "Type", "Parameter", "Description" },
-                                new Alignment[] { Alignment.Center, Alignment.Center, Alignment.Left },
-                                paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
+                            md.CreateTable(new string[] { "Modifiers", "Type", "Parameter", "Description" },
+                                new Alignment[] { Alignment.Left, Alignment.Left, Alignment.Center, Alignment.Left },
+                                paramModifiers.ToArray(), paramTypes.ToArray(), paramNames.ToArray(), paramDescriptions.ToArray());
                         }
                     }
                 }

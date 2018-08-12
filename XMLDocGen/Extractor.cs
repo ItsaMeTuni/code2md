@@ -9,7 +9,7 @@ namespace XMLDocGen
 {
     public class Extractor
     {
-        public static string GetMethodName(string _XMLsignature)
+        public static string ExtractMethodNameFromXmlName(string _XMLsignature)
         {
             string str = _XMLsignature;
             str = RemoveNamePrefix(str);
@@ -19,7 +19,7 @@ namespace XMLDocGen
             return str;
         }
 
-        public static string GetFieldName(string _XMLsignature)
+        public static string ExtractFieldNameFromXmlName(string _XMLsignature)
         {
             string str = _XMLsignature;
             str = RemoveNamePrefix(str);

@@ -106,7 +106,7 @@ namespace XMLDocGen
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                if (Extractor.GetMethodName(_nodeList[i].Attributes["name"].Value) == _methodName)
+                if (Extractor.ExtractMethodNameFromXmlName(_nodeList[i].Attributes["name"].Value) == _methodName)
                 {
                     return _nodeList[i];
                 }
@@ -142,7 +142,7 @@ namespace XMLDocGen
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                if (Extractor.GetFieldName(_nodeList[i].Attributes["name"].Value) == _fieldName)
+                if (Extractor.ExtractFieldNameFromXmlName(_nodeList[i].Attributes["name"].Value) == _fieldName)
                 {
                     return _nodeList[i];
                 }
@@ -157,11 +157,17 @@ namespace XMLDocGen
         /// <param name="_type">The _type you want to get the name from</param>
         public static string GetTypeNameMarkdownText(this Type _type)
         {
+            Type elementType = _type.GetElementType();
+            if (elementType != null)
+            {
+                _type = elementType;
+            }
+
             string str = "";
 
-            if(customTypeNames.ContainsKey(_type))
+            if (customTypeNames.ContainsKey(_type))
             {
-                str =  customTypeNames[_type];
+                str = customTypeNames[_type];
             }
             else
             {
@@ -188,6 +194,12 @@ namespace XMLDocGen
         /// <returns></returns>
         private static string GetReadableGenericTypeName(Type _type)
         {
+            Type elementType = _type.GetElementType();
+            if(elementType != null)
+            {
+                _type = elementType;
+            }
+
             if (!_type.IsGenericType)
             {
                 return _type.Name;
@@ -228,6 +240,112 @@ namespace XMLDocGen
         public static bool IsFromAssembly(this Type _type, Assembly _assembly)
         {
             return _type.Assembly == _assembly;
+        }
+
+        public static string GetModifiersString(this ParameterInfo _param)
+        {
+            string str = "";
+
+            if(_param.IsIn)
+            {
+                str += "in ";
+            }
+            else if (_param.IsOut)
+            {
+                str += "out ";
+            }
+            else if (_param.ParameterType.IsByRef)
+            {
+                str += "ref ";
+            }
+
+            if(str == "")
+            {
+                str = "---";
+            }
+
+            return str;
+        }
+
+        public static string GetModifiersString(this FieldInfo _field)
+        {
+            string str = "";
+
+            if(_field.IsPublic)
+            {
+                str += "public ";
+            }
+            else if (_field.IsPrivate)
+            {
+                str += "private ";
+            }
+            else if (_field.IsFamily)
+            {
+                str += "protected ";
+            }
+
+            if(_field.IsStatic)
+            {
+                str += "static ";
+            }
+
+            if(_field.IsLiteral)
+            {
+                if(_field.IsInitOnly)
+                {
+                    str += "readonly ";
+                }
+                else
+                {
+                    str += "const ";
+                }
+            }
+
+            if (str == "")
+            {
+                str = "---";
+            }
+
+            return str;
+        }
+
+        public static string GetModfiersString(this MethodInfo _method)
+        {
+            string str = "";
+
+            if(_method.IsPublic)
+            {
+                str += "public ";
+            }
+            else if (_method.IsPrivate)
+            {
+                str += "private ";
+            }
+            else if (_method.IsFamily)
+            {
+                str += "protected ";
+            }
+
+            if  (_method.IsVirtual)
+            {
+                str += "virtual ";
+            }
+            else if (_method.DeclaringType != _method.ReflectedType)
+            {
+                str += "override ";
+            }
+
+            if(_method.IsAbstract)
+            {
+                str += "abstract ";
+            }
+
+            if (str == "")
+            {
+                str = "---";
+            }
+
+            return str;
         }
     }
 }

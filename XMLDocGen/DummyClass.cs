@@ -64,8 +64,9 @@ namespace XMLDocGen
         /// <param name="_b">neither this</param>
         /// <param name="_c">or this</param>
         /// <returns>returns either true or false, might be random</returns>
-        public bool Foo(string _a, int _b, float _c)
+        public bool Foo(ref List<string> _a, int _b, out float _c)
         {
+            _c = 0;
             return false;
         }
     }
