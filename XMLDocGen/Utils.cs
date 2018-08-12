@@ -157,6 +157,8 @@ namespace XMLDocGen
         /// <param name="_type">The _type you want to get the name from</param>
         public static string GetTypeNameMarkdownText(this Type _type)
         {
+            bool isArray = _type.IsArray;
+
             Type elementType = _type.GetElementType();
             if (elementType != null)
             {
@@ -172,6 +174,11 @@ namespace XMLDocGen
             else
             {
                 str =  GetReadableGenericTypeName(_type);
+            }
+
+            if(isArray)
+            {
+                str += "[]";
             }
 
             str = MarkdownHelper.CreateCode(str);
@@ -245,6 +252,11 @@ namespace XMLDocGen
         public static string GetModifiersString(this ParameterInfo _param)
         {
             string str = "";
+
+            if(_param.GetCustomAttribute<ParamArrayAttribute>() != null)
+            {
+                str += "params ";
+            }
 
             if(_param.IsIn)
             {

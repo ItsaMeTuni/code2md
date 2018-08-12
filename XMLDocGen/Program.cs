@@ -165,21 +165,22 @@ namespace XMLDocGen
                     XmlNode methodNode = xml.FindMethodMemberWithName(types[type].FullName + "." + methods[method].Name);
                     methodData.commentData = GetCommentData(methodNode);
 
-                    if (methodNode != null)
+                    ParameterInfo[] parameters = methods[method].GetParameters();
+
+                    XmlNodeList parameterNodes = methodNode?.SelectNodes("param");
+
+                    for (int param = 0; param < parameters.Length; param++)
                     {
-                        ParameterInfo[] parameters = methods[method].GetParameters();
+                        ParameterData parameterData = new ParameterData();
 
-                        XmlNodeList parameterNodes = methodNode.SelectNodes("param");
+                        parameterData.parameterInfo = parameters[param];
 
-                        for (int param = 0; param < parameters.Length; param++)
+                        if (methodNode != null)
                         {
-                            ParameterData parameterData = new ParameterData();
-
-                            parameterData.parameterInfo = parameters[param];
-                            parameterData.desc = parameterNodes.FindMemberWithName(parameters[param].Name)?.InnerText.CleanString();
-
-                            methodData.parameters.Add(parameterData);
+                            parameterData.desc = parameterNodes?.FindMemberWithName(parameters[param].Name)?.InnerText.CleanString();
                         }
+
+                        methodData.parameters.Add(parameterData);
                     }
                     classData.methods.Add(methodData);
                 }

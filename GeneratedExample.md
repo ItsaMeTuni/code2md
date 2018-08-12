@@ -47,19 +47,39 @@ out  | `float` | _c | or this
   
 ## Methods
   
-### **public `string` ExtractMethodNameFromXmlName()**
+### **public `string` ExtractMethodNameFromXmlName(`string` _XMLsignature)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string` | _XMLsignature | 
+
   
 <br/> 
 
-### **public `string` ExtractFieldNameFromXmlName()**
+### **public `string` ExtractFieldNameFromXmlName(`string` _XMLsignature)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string` | _XMLsignature | 
+
   
 <br/> 
 
-### **private `string` RemoveNamePrefix()**
+### **private `string` RemoveNamePrefix(`string` _name)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string` | _name | 
+
   
 <br/> 
 
-### **public `string` CleanString()**
+### **public `string` CleanString(`string` _in)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string` | _in | 
+
   
 <br/> 
 
@@ -180,23 +200,53 @@ Modifiers | Type | Parameter | Description
   
 <br/> 
 
-### **private `Void` AddSpace()**
+### **private `Void` AddSpace(`int` _i)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `int` | _i | 
+
   
 <br/> 
 
-### **public `Void` CreateTable()**
+### **public `Void` CreateTable(`string[]` _headers, [`Alignment[]`](#xmldocgenalignment) _alignments, `String[]` _data)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string[]` | _headers | 
+--- | [`Alignment[]`](#xmldocgenalignment) | _alignments | 
+params  | `String[]` | _data | 
+
   
 <br/> 
 
-### **public `string` CreateLink()**
+### **public `string` CreateLink(`string` _text, `string` _toHeader, `int` _headerLevel)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string` | _text | 
+--- | `string` | _toHeader | 
+--- | `int` | _headerLevel | 
+
   
 <br/> 
 
-### **public `string` CreateCode()**
+### **public `string` CreateCode(`string` _code)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string` | _code | 
+
   
 <br/> 
 
-### **public [`MarkdownHelper`](#xmldocgenmarkdownhelper) op_Addition()**
+### **public [`MarkdownHelper`](#xmldocgenmarkdownhelper) op_Addition([`MarkdownHelper`](#xmldocgenmarkdownhelper) _l, `string` _r)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | [`MarkdownHelper`](#xmldocgenmarkdownhelper) | _l | 
+--- | `string` | _r | 
+
   
 <br/> 
 
@@ -305,7 +355,12 @@ private static  | `XmlNodeList` | xml |
 
 ## Methods
   
-### **private `Void` Main()**
+### **private `Void` Main(`string[]` args)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `string[]` | args | 
+
   
 <br/> 
 
@@ -363,34 +418,45 @@ private static  | `Dictionary<Type,String>` | customTypeNames |
 
 ## Methods
   
-### **public `List<T>` ListFieldToList()**
+### **public `List<T>` ListFieldToList(`List<U>` _list, `string` _fieldName)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `List<U>` | _list | 
+--- | `string` | _fieldName | 
+
   
 <br/> 
 
-### **public `string` ToArray()**
+### **public `string[]` ToArray(`MatchCollection` _collection)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `MatchCollection` | _collection | 
+
   
 <br/> 
 
-### **public `string` RegexReplaceOnArray(`string` _arr, `string` _regex, `string` _replace)**
+### **public `string[]` RegexReplaceOnArray(`string[]` _arr, `string` _regex, `string` _replace)**
   
 **Summary:** Does the same as Regex.Replace but on a whole array. 
   
 Modifiers | Type | Parameter | Description
 :---|:---|:---:|:---
---- | `string` | _arr | The array to operate on
+--- | `string[]` | _arr | The array to operate on
 --- | `string` | _regex | The regular expression
 --- | `string` | _replace | What to put in the place of a regex match
 
   
 <br/> 
 
-### **public `string` RegexMatchOnArray(`string` _arr, `string` _regex)**
+### **public `string[]` RegexMatchOnArray(`string[]` _arr, `string` _regex)**
   
 **Summary:** Gets the Regex Match value from each string on an array 
   
 Modifiers | Type | Parameter | Description
 :---|:---|:---:|:---
---- | `string` | _arr | The array to operate on
+--- | `string[]` | _arr | The array to operate on
 --- | `string` | _regex | The regular expression
 
   
@@ -501,15 +567,30 @@ Modifiers | Type | Parameter | Description
   
 <br/> 
 
-### **public `string` GetModifiersString()**
+### **public `string` GetModifiersString(`ParameterInfo` _param)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `ParameterInfo` | _param | 
+
   
 <br/> 
 
-### **public `string` GetModifiersString()**
+### **public `string` GetModifiersString(`FieldInfo` _field)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `FieldInfo` | _field | 
+
   
 <br/> 
 
-### **public `string` GetModfiersString()**
+### **public `string` GetModfiersString(`MethodInfo` _method)**
+  
+Modifiers | Type | Parameter | Description
+:---|:---|:---:|:---
+--- | `MethodInfo` | _method | 
+
   
 <br/> 
 
