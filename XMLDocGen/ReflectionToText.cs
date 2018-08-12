@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace XMLDocGen
 {
@@ -24,11 +25,7 @@ namespace XMLDocGen
         {
             bool isArray = _type.IsArray;
 
-            Type elementType = _type.GetElementType();
-            if (elementType != null)
-            {
-                _type = elementType;
-            }
+            _type = _type = GetElementTypeRecursively(_type, out int typeWrapLevelCount);
 
             string str = "";
 
@@ -43,7 +40,10 @@ namespace XMLDocGen
 
             if (isArray)
             {
-                str += "[]";
+                for (int i = 0; i < typeWrapLevelCount; i++)
+                {
+                    str += "[]";
+                }
             }
 
             str = MarkdownBuilder.CreateCode(str);
@@ -64,13 +64,9 @@ namespace XMLDocGen
         /// </remarks>
         /// <param name="_type">The generic type name</param>
         /// <returns></returns>
-        private static string GetReadableGenericTypeName(Type _type)
+        public static string GetReadableGenericTypeName(Type _type)
         {
-            Type elementType = _type.GetElementType();
-            if (elementType != null)
-            {
-                _type = elementType;
-            }
+            _type = GetElementTypeRecursively(_type);
 
             if (!_type.IsGenericType)
             {
@@ -195,6 +191,25 @@ namespace XMLDocGen
             }
 
             return str;
+        }
+
+        public static Type GetElementTypeRecursively(Type _type, out int _count)
+        {
+            Type returnType = _type;
+            _count = 0;
+
+            while (returnType.GetElementType() != null)
+            {
+                returnType = returnType.GetElementType();
+                _count++;
+            }
+
+            return returnType;
+        }
+
+        public static Type GetElementTypeRecursively(Type _type)
+        {
+            return GetElementTypeRecursively(_type, out int val);
         }
     }
 }

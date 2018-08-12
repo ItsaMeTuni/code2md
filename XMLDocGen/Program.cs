@@ -18,7 +18,6 @@ namespace XMLDocGen
         static string assemblyPath = "";
         static string outFolder = "";
 
-        static List<ClassData> classes = new List<ClassData>();
         public static Assembly assembly;
         static XmlNodeList xml;
 
@@ -59,9 +58,6 @@ namespace XMLDocGen
 
             assembly = Assembly.GetAssembly(typeof(Program));
             xml = members;
-
-            ReadAssembly();
-            ToMarkdown();
         }
 
         /// <summary>

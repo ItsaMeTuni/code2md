@@ -115,7 +115,7 @@ namespace XMLDocGen
                 MethodData methodData = new MethodData();
 
                 methodData.methodInfo = method;
-                methodData.xmlData = GetXmlData(nodeList.FindMethodMemberWithName(_method.GetFullName()));
+                methodData.xmlData = GetXmlData(nodeList.FindMethodMemberWithName(method.GetFullName()));
                 methodData.parameters = GetParameterData(method);
 
                 methodDatas.Add(methodData);
