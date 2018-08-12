@@ -390,6 +390,11 @@ namespace XMLDocGen
 
                             for (int i = 0; i < method.parameters.Count; i++)
                             {
+                                if (method.parameters[i].parameterInfo.Name == "_data")
+                                {
+
+                                }
+
                                 paramModifiers.Add(method.parameters[i].parameterInfo.GetModifiersString());
                                 paramTypes.Add(method.parameters[i].parameterInfo.ParameterType.GetTypeNameMarkdownText());
                                 paramNames.Add(method.parameters[i].parameterInfo.Name);
