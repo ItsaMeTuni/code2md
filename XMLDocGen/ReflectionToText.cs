@@ -21,7 +21,7 @@ namespace XMLDocGen
         /// Gets _type's name (if there's a custom name for this type the custom name will be returned)
         /// </summary>
         /// <param name="_type">The _type you want to get the name from</param>
-        public static string GetTypeNameMarkdownText(this Type _type)
+        public static string GetMarkdownTypeName(this Type _type)
         {
             bool isArray = _type.IsArray;
 
@@ -104,11 +104,6 @@ namespace XMLDocGen
                 str += "ref ";
             }
 
-            if (str == "")
-            {
-                str = "---";
-            }
-
             return str;
         }
 
@@ -146,11 +141,6 @@ namespace XMLDocGen
                 }
             }
 
-            if (str == "")
-            {
-                str = "---";
-            }
-
             return str;
         }
 
@@ -185,11 +175,6 @@ namespace XMLDocGen
                 str += "abstract ";
             }
 
-            if (str == "")
-            {
-                str = "---";
-            }
-
             return str;
         }
 
@@ -210,6 +195,52 @@ namespace XMLDocGen
         public static Type GetElementTypeRecursively(Type _type)
         {
             return GetElementTypeRecursively(_type, out int val);
+        }
+
+        public static string GetTextSignature(this MethodInfo _method)
+        {
+            string str = "";
+
+            str += _method.ReturnType.GetMarkdownTypeName() + " ";
+            str += _method.Name + "(";
+
+            ParameterInfo[] parameters = _method.GetParameters();
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                ParameterInfo param = parameters[i];
+
+                if(i > 0)
+                {
+                    str += ", ";
+                }
+
+                str += param.ParameterType.GetMarkdownTypeName() + " ";
+                str += param.Name;
+            }
+
+            str += ")";
+
+            return str;
+        }
+
+        public static string GetAcessorsStr(this PropertyInfo _property)
+        {
+            string str = "{";
+
+            if(_property.GetMethod != null)
+            {
+                str += _property.GetMethod.GetModfiersString() + "get;";
+            }
+
+            if (_property.SetMethod != null)
+            {
+                str += _property.SetMethod.GetModfiersString() + "set;";
+            }
+
+            str += "}";
+
+            return str;
         }
     }
 }

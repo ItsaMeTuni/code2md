@@ -1,0 +1,68 @@
+$START_PAGE$
+$START_CLASS$
+# $class_name$
+
+**Summary:** $class_summary$
+**Remarks:** $class_remarks$
+
+## Fields
+
+|Modifiers            |Type          | Name         | Description
+|---------------------|--------------|:------------:|------------
+$START_FIELD$
+| $field_modifiers$ | $field_type$ | $field_name$ | **Summary:** $field_summary$ **Remarks:** $field_remarks$
+$END_FIELD$
+
+<br/>
+<br/>
+
+## Properties
+
+|Modifiers            | Type            | Name            | Acessors             | Description
+|---------------------|-----------------|:---------------:|----------------------|------------
+$START_PROPERTY$
+|$property_modifiers$ | $property_type$ | $property_name$ | $property_accessors$ | **Summary:** $property_summary$ **Remarks:** $property_remarks$
+$END_PROPERTY$
+
+<br/>
+<br/>
+
+## Methods
+
+$START_METHOD$
+
+### **$method_signature$**
+
+**Summary:** $method_summary$
+**Remarks:** $method_remarks$
+
+| Modifiers       | Type             | Name             | Default value | Description
+|-----------------|------------------|:----------------:|---------------|------------
+$START_PARAM$
+| $param_modifiers$ |$param_type$ | $param_name$ | $param_default_value$ | $param_desc$
+$END_PARAM$
+
+<br/>
+<br/>
+
+$END_METHOD$
+$END_CLASS$
+$END_PAGE$
+
+$START_PAGE$
+$START_ENUM$
+# $enum_name$
+
+**Underlying type:** $enum_underlying_type$
+
+**Summary:** $enum_summary$
+**Remarks:** $enum_remarks$
+
+|ElementName         | Element value
+|--------------------|--------------
+$START_ENUM_ELEMENT$
+| $enum_element_name$ | $enum_element_value$
+$END_ENUM_ELEMENT$
+
+$END_ENUM$
+$END_PAGE$

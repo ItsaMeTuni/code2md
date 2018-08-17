@@ -85,6 +85,12 @@ namespace XMLDocGen
             _in = Regex.Replace(_in, @"\t|\n|\r", ""); //Remove new lines
             _in = Regex.Replace(_in, @"[ ]{2,}", " "); //Remove consecutive spaces
             _in = Regex.Replace(_in, @"^\s", ""); //Remove space at the start of the string
+            return _in;
+        }
+
+        public static string RemoveFirstAndLastNewLine(this string _in)
+        {
+            _in = Regex.Replace(_in, @"^\r?\n?|\r?\n?$", "", RegexOptions.Singleline);
 
             return _in;
         }
@@ -115,6 +121,21 @@ namespace XMLDocGen
         public static bool IsFromAssembly(this Type _type, Assembly _assembly)
         {
             return _type.Assembly == _assembly;
+        }
+
+        public static string RemoveNamePrefix(string _name)
+        {
+            return _name.Remove(0, 2);
+        }
+
+        public static string Str(this Tags _tag, bool _regex = true)
+        {
+            return _regex ? Regex.Escape("$" + _tag + "$") : "$" + _tag + "$";
+        }
+
+        public static string MarkdownEscape(this string _text)
+        {
+            return MarkdownBuilder.Escape(_text);
         }
     }
 }
