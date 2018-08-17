@@ -7,6 +7,33 @@ using System.Threading.Tasks;
 namespace XMLDocGen
 {
     /// <summary>
+    /// It is a disguised int! Be careful...
+    /// </summary>
+    enum DummyEnum
+    {
+        /// <summary>
+        /// First letter of the alphabet!
+        /// </summary>
+        element_a,
+        /// <summary>
+        /// Second letter of the alphabet!
+        /// </summary>
+        element_b,
+        /// <summary>
+        /// Whoah you skipped one.
+        /// </summary>
+        element_d,
+        /// <summary>
+        /// This ain't a letter anymore.
+        /// </summary>
+        element_5,
+        /// <summary>
+        /// what
+        /// </summary>
+        element_alpha
+    }
+
+    /// <summary>
     /// It's such a fool!
     /// </summary>
     /// <remarks>

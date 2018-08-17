@@ -46,20 +46,19 @@
   <ItemGroup>
     <Compile Include="DataGatherer.cs" />
     <Compile Include="DummyClass.cs" />
-    <Compile Include="Extractor.cs" />
-    <Compile Include="MarkdownGenerator.cs" />
     <Compile Include="MarkdownBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionHelper.cs" />
     <Compile Include="ReflectionToText.cs" />
-    <Compile Include="TemplateParser.cs" />
     <Compile Include="TemplateReplacer.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="XmlHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -141,10 +141,7 @@ namespace XMLDocGen
 
             for (int i = 0; i < _headers.Length; i++)
             {
-                if (i > 0)
-                {
-                    table += " | ";
-                }
+                table += " | ";
 
                 table += _headers[i];
             }
@@ -153,10 +150,7 @@ namespace XMLDocGen
 
             for (int i = 0; i < _headers.Length; i++)
             {
-                if (i > 0)
-                {
-                    table += "|";
-                }
+                table += "|";
 
                 if (_alignments == null || _alignments.Length <= i || _alignments[i] == Alignment.Left || _alignments[i] == Alignment.Center)
                 {
@@ -218,6 +212,15 @@ namespace XMLDocGen
         public static string CreateCode(string _code)
         {
             return "`" + _code + "`";
+        }
+
+        public static string Escape(string _text)
+        {
+            string str = _text;
+
+            str = Regex.Replace(str, @"_", @"\_");
+
+            return str;
         }
 
         public static MarkdownBuilder operator +(MarkdownBuilder _l, string _r)

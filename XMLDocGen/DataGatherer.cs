@@ -15,7 +15,7 @@ namespace XMLDocGen
         Assembly assembly;
         XmlNodeList nodeList;
 
-        DataGatherer(Assembly _assembly, XmlNodeList _xmlNodes)
+        public DataGatherer(Assembly _assembly, XmlNodeList _xmlNodes)
         {
             assembly = _assembly;
             nodeList = _xmlNodes;
@@ -37,6 +37,7 @@ namespace XMLDocGen
 
                 TypeData typeData = new TypeData();
 
+                typeData.typeInfo = type.GetTypeInfo();
                 typeData.fields = GetFieldData(type);
                 typeData.properties = GetPropertyData(type);
                 typeData.methods = GetMethodData(type);
@@ -128,9 +129,10 @@ namespace XMLDocGen
         {
             List<ParameterData> parameterDatas = new List<ParameterData>();
 
-            XmlNodeList paramNodes = nodeList.FindMethodMemberWithName(_method.GetFullName()).SelectNodes("param");
+            XmlNodeList paramNodes = nodeList.FindMethodMemberWithName(_method.GetFullName())?.SelectNodes("param");
 
             ParameterInfo[] parameters = _method.GetParameters();
+
             for (int iParameter = 0; iParameter < parameters.Length; iParameter++)
             {
                 ParameterInfo parameter = parameters[iParameter];
@@ -138,7 +140,13 @@ namespace XMLDocGen
                 ParameterData parameterData = new ParameterData();
 
                 parameterData.parameterInfo = parameter;
-                parameterData.xmlData = GetXmlData(paramNodes.FindMemberWithName(parameter.Name));
+
+                if (paramNodes != null)
+                {
+                    parameterData.xmlData = GetXmlData(paramNodes.FindMemberWithName(parameter.Name));
+                }
+
+                parameterDatas.Add(parameterData);
             }
 
             return parameterDatas;
@@ -148,13 +156,10 @@ namespace XMLDocGen
         {
             XmlData data = new XmlData();
 
-            if (_node != null)
-            {
-                data.summary = _node.SelectSingleNode("summary")?.InnerText;
-                data.remarks = _node.SelectSingleNode("remarks")?.InnerText;
-                data.returns = _node.SelectSingleNode("returns")?.InnerText;
-                data.example = _node.SelectSingleNode("example")?.InnerText;
-            }
+            data.summary = _node?.SelectSingleNode("summary")?.InnerText.CleanString() ?? "";
+            data.remarks = _node?.SelectSingleNode("remarks")?.InnerText.CleanString() ?? "";
+            data.returns = _node?.SelectSingleNode("returns")?.InnerText.CleanString() ?? "";
+            data.example = _node?.SelectSingleNode("example")?.InnerText.CleanString() ?? "";
 
             return data;
         }

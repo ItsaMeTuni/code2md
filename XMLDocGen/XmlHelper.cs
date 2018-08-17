@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Text.RegularExpressions;
 
 namespace XMLDocGen
 {
@@ -18,7 +19,7 @@ namespace XMLDocGen
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                if (Extractor.ExtractMethodNameFromXmlName(_nodeList[i].Attributes["name"].Value) == _methodName)
+                if (ExtractMethodNameFromXmlName(_nodeList[i].Attributes["name"].Value) == _methodName)
                 {
                     return _nodeList[i];
                 }
@@ -54,13 +55,31 @@ namespace XMLDocGen
         {
             for (int i = 0; i < _nodeList.Count; i++)
             {
-                if (Extractor.ExtractFieldNameFromXmlName(_nodeList[i].Attributes["name"].Value) == _fieldName)
+                if (ExtractFieldNameFromXmlName(_nodeList[i].Attributes["name"].Value) == _fieldName)
                 {
                     return _nodeList[i];
                 }
             }
 
             return null;
+        }
+
+        public static string ExtractMethodNameFromXmlName(string _XMLsignature)
+        {
+            string str = _XMLsignature;
+            str = Utils.RemoveNamePrefix(str);
+
+            str = Regex.Match(str, @"([^\(]*)").Value; //Read up until first parenthesis
+
+            return str;
+        }
+
+        public static string ExtractFieldNameFromXmlName(string _XMLsignature)
+        {
+            string str = _XMLsignature;
+            str = Utils.RemoveNamePrefix(str);
+
+            return str;
         }
     }
 }

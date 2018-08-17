@@ -14,15 +14,26 @@ namespace XMLDocGen
 {
     class Program
     {
-        static string xmlPath = "";
-        static string assemblyPath = "";
-        static string outFolder = "";
+        public static string XmlPath { get; private set; }
+        public static string AssemblyPath { get; private set; }
+        public static string OutFolder { get; private set; }
+        public static string TemplatePath { get; private set; }
 
         public static Assembly assembly;
         static XmlNodeList xml;
 
         static void Main(string[] args)
         {
+            LoadConfigs();
+
+
+
+
+
+
+            Console.ReadLine();
+            return;
+
             Program program = new Program();
             program.Generate();
 
@@ -31,18 +42,18 @@ namespace XMLDocGen
 
         void Generate()
         {
-            LoadConfigs();
-
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(GetXmlPath());
-
-            XmlNodeList members = xmlDoc.SelectNodes("doc/members/member");
+            xmlDoc.Load(XmlPath);
+            xml = xmlDoc.SelectNodes("doc/members/member");
 
             //Load assembly
 
+
+            //Currently we load the current assembly for testing purposes
+            assembly = Assembly.GetAssembly(typeof(Program));
+
+            //assembly = Assembly.ReflectionOnlyLoadFrom(assemblyPath);
             /*
-             * Currently we load the current assembly for testing purposes
-            Assembly assembly = Assembly.ReflectionOnlyLoadFrom(assemblyPath);
             foreach (var assemblyName in assembly.GetReferencedAssemblies())
             {
                 try
@@ -56,22 +67,22 @@ namespace XMLDocGen
             }
             */
 
-            assembly = Assembly.GetAssembly(typeof(Program));
-            xml = members;
+            string template = File.ReadAllText(TemplatePath);
+            List<TypeData> typeDatas = new DataGatherer(assembly, xml).GetTypeData();
+
+            TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
+            replacer.Replace();
         }
 
-        /// <summary>
-        /// Gets the path of the xml documentation file in xmlPath (can be a relative or an absolute path)
-        /// </summary>
-        string GetXmlPath()
+        static string ToAbsolutePath(string _path)
         {
-            if(File.Exists(xmlPath))
+            if (File.Exists(_path) || Directory.Exists(_path))
             {
-                return xmlPath;
+                return _path;
             }
-            else if (File.Exists(Environment.CurrentDirectory + xmlPath))
+            else if (File.Exists(Environment.CurrentDirectory + _path) || Directory.Exists(Environment.CurrentDirectory + _path))
             {
-                return Environment.CurrentDirectory + xmlPath;
+                return Environment.CurrentDirectory + _path;
             }
             else
             {
@@ -79,15 +90,17 @@ namespace XMLDocGen
             }
         }
 
-        void LoadConfigs()
+        static void LoadConfigs()
         {
-            assemblyPath = ConfigurationManager.AppSettings["assemblyFilePath"];
-            xmlPath = ConfigurationManager.AppSettings["xmlFilePath"];
-            outFolder = ConfigurationManager.AppSettings["outputFolderPath"];
+            //AssemblyPath = ToAbsolutePath(ConfigurationManager.AppSettings["assemblyFilePath"]);
+            XmlPath = ToAbsolutePath(ConfigurationManager.AppSettings["xmlFilePath"]);
+            OutFolder = ToAbsolutePath(ConfigurationManager.AppSettings["outputFolderPath"]);
+            TemplatePath = ToAbsolutePath(ConfigurationManager.AppSettings["templateFilePath"]);
 
-            Console.WriteLine("assemblyPath: " + assemblyPath);
-            Console.WriteLine("xmlPath: " + xmlPath);
-            Console.WriteLine("outFolder: " + outFolder);
+            Console.WriteLine("assemblyPath: " + AssemblyPath);
+            Console.WriteLine("xmlPath: " + XmlPath);
+            Console.WriteLine("outFolder: " + OutFolder);
+            Console.WriteLine("templatePath: " + TemplatePath);
         }
     }
 }
