@@ -1,0 +1,1 @@
+../../../generatedOutput/xmldoc-gen/dummy-class.md
