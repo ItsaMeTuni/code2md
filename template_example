@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 $START_CLASS$
 $START_PAGE$
 # $START_PAGE_NAME$$class_name$$END_PAGE_NAME$
-=======
-$START_PAGE$
-$START_CLASS$
-# $class_name$
->>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
 
 **Summary:** $class_summary$
 **Remarks:** $class_remarks$
@@ -52,21 +46,12 @@ $END_PARAM$
 <br/>
 
 $END_METHOD$
-<<<<<<< HEAD
 $END_PAGE$
 $END_CLASS$
 
 $START_ENUM$
 $START_PAGE$
 # $START_PAGE_NAME$$enum_name$$END_PAGE_NAME$
-=======
-$END_CLASS$
-$END_PAGE$
-
-$START_PAGE$
-$START_ENUM$
-# $enum_name$
->>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
 
 **Underlying type:** $enum_underlying_type$
 
@@ -79,10 +64,5 @@ $START_ENUM_ELEMENT$
 | $enum_element_name$ | $enum_element_value$
 $END_ENUM_ELEMENT$
 
-<<<<<<< HEAD
 $END_PAGE$
 $END_ENUM$
-=======
-$END_ENUM$
-$END_PAGE$
->>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
