@@ -1,5 +1,6 @@
 
 # DummyEnum
+
 **Underlying type:** `int`
 
 **Summary:** 

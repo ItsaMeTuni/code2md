@@ -59,7 +59,14 @@ namespace XMLDocGen
         enum_element_name,
         enum_element_value,
         enum_element_summary,
-        enum_element_remarks
+        enum_element_remarks,
+        class_extra_doc,
+        field_extra_doc,
+        property_extra_doc,
+        method_extra_doc,
+        enum_extra_doc,
+        class_full_name,
+        enum_full_name
     }
 
     class TemplateReplacer
@@ -140,20 +147,24 @@ namespace XMLDocGen
 
             Console.WriteLine("---GENERATION ENDED---");
             Console.WriteLine("Total file length: " + output.Length);
-
-            //System.IO.File.WriteAllText(Program.OutFolder + "/GeneratedExample.md", CleanUpTags(output));
-
         }
         
         public void CreatePages()
         {
+            CleanOutputFolder();
+
             while (Regex.IsMatch(output, Tags.START_PAGE_NAME.Str()))
             {
                 string pageContent = GetInBetweenTags(output, Tags.START_PAGE, Tags.END_PAGE);
                 string pageName = GetInBetweenTags(pageContent, Tags.START_PAGE_NAME, Tags.END_PAGE_NAME);
-                pageName = ToPageName(pageName);
 
-                System.IO.File.WriteAllText(Program.OutFolder + "/" + pageName + ".md", CleanUpTags(pageContent));
+                string matchStr = Tags.START_PAGE_NAME.Str() + pageName + Tags.END_PAGE_NAME.Str() + @"\r?\n?";
+
+                Match match = Regex.Match(pageContent, matchStr);
+
+                pageContent = pageContent.Remove(match.Index, match.Length);
+
+                System.IO.File.WriteAllText(Program.OutFolder + "/" + ToPageName(pageName) + ".md", CleanUpTags(pageContent));
 
                 int charCount = pageContent.Length + Tags.START_PAGE.Str(false).Length + Tags.END_PAGE.Str(false).Length;
 
@@ -189,6 +200,7 @@ namespace XMLDocGen
             str = Regex.Replace(str, Tags.class_name.Str(), _type.typeInfo.Name);
             str = Regex.Replace(str, Tags.class_summary.Str(), _type.xmlData.summary);
             str = Regex.Replace(str, Tags.class_remarks.Str(), _type.xmlData.remarks);
+            str = Regex.Replace(str, Tags.class_full_name.Str(), _type.typeInfo.FullName);
 
             return str;
         }
@@ -201,6 +213,7 @@ namespace XMLDocGen
             str = Regex.Replace(str, Tags.enum_underlying_type.Str(), Enum.GetUnderlyingType(_type.typeInfo).GetMarkdownTypeName());
             str = Regex.Replace(str, Tags.enum_summary.Str(), _type.xmlData.summary);
             str = Regex.Replace(str, Tags.enum_remarks.Str(), _type.xmlData.remarks);
+            str = Regex.Replace(str, Tags.enum_full_name.Str(), _type.typeInfo.FullName);
 
             return str;
         }
@@ -356,12 +369,12 @@ namespace XMLDocGen
         {
             string str = _text;
 
-            str = Regex.Replace(str, " ", "-");
+            str = Regex.Replace(str, @" |\.", "-");
 
             //Add - in between a lower-case and an upper-case letter (camelCase to "hypen-case" or whatever it's called)
             for (int i = 0; i < str.Length; i++)
             {
-                if(i > 0 && Char.IsUpper(str[i]) && !Char.IsUpper(str[i-1]))
+                if(i > 0 && Char.IsUpper(str[i]) && !Char.IsUpper(str[i-1]) && !Char.IsPunctuation(str[i - 1]))
                 {
                     str = str.Insert(i, "-");
 
@@ -373,6 +386,17 @@ namespace XMLDocGen
             str = str.ToLowerInvariant();
 
             return str;
+        }
+
+        void CleanOutputFolder()
+        {
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Program.OutFolder);
+            System.IO.FileInfo[] files = dir.GetFiles();
+
+            foreach (var file in files)
+            {
+                file.Delete();
+            }
         }
     }
 }

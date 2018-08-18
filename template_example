@@ -1,6 +1,7 @@
 $START_CLASS$
 $START_PAGE$
-# $START_PAGE_NAME$$class_name$$END_PAGE_NAME$
+$START_PAGE_NAME$$class_full_name$$END_PAGE_NAME$
+# $class_name$
 
 **Summary:** $class_summary$
 **Remarks:** $class_remarks$
@@ -51,7 +52,8 @@ $END_CLASS$
 
 $START_ENUM$
 $START_PAGE$
-# $START_PAGE_NAME$$enum_name$$END_PAGE_NAME$
+$START_PAGE_NAME$$enum_full_name$$END_PAGE_NAME$
+# $enum_name$
 
 **Underlying type:** $enum_underlying_type$
 
