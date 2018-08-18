@@ -1,6 +1,6 @@
-$START_PAGE$
 $START_CLASS$
-# $class_name$
+$START_PAGE$
+# $START_PAGE_NAME$$class_name$$END_PAGE_NAME$
 
 **Summary:** $class_summary$
 **Remarks:** $class_remarks$
@@ -46,12 +46,12 @@ $END_PARAM$
 <br/>
 
 $END_METHOD$
-$END_CLASS$
 $END_PAGE$
+$END_CLASS$
 
-$START_PAGE$
 $START_ENUM$
-# $enum_name$
+$START_PAGE$
+# $START_PAGE_NAME$$enum_name$$END_PAGE_NAME$
 
 **Underlying type:** $enum_underlying_type$
 
@@ -64,5 +64,5 @@ $START_ENUM_ELEMENT$
 | $enum_element_name$ | $enum_element_value$
 $END_ENUM_ELEMENT$
 
-$END_ENUM$
 $END_PAGE$
+$END_ENUM$

@@ -26,14 +26,6 @@ namespace XMLDocGen
         {
             LoadConfigs();
 
-
-
-
-
-
-            Console.ReadLine();
-            return;
-
             Program program = new Program();
             program.Generate();
 
@@ -72,6 +64,7 @@ namespace XMLDocGen
 
             TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
             replacer.Replace();
+            replacer.CreatePages();
         }
 
         static string ToAbsolutePath(string _path)
