@@ -11,8 +11,11 @@ namespace XMLDocGen
     {
         START_PAGE,
         END_PAGE,
+<<<<<<< HEAD
         START_PAGE_NAME,
         END_PAGE_NAME,
+=======
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
         START_CLASS,
         END_CLASS,
         START_FIELD,
@@ -77,18 +80,47 @@ namespace XMLDocGen
         private string enumFragment;
         private string paramFragment;
 
+<<<<<<< HEAD
         private string output = "";
 
+=======
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
         public TemplateReplacer(string _template, List<TypeData> _typeDatas)
         {
             template = _template;
             typeDatas = _typeDatas;
+<<<<<<< HEAD
 
             SetupFragmentTemplates();
+=======
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
         }
 
         public void Replace()
         {
+<<<<<<< HEAD
+=======
+            string output = "";
+
+            classFragment = GetInBetweenTags(template, Tags.START_CLASS, Tags.END_CLASS).RemoveFirstAndLastNewLine();
+            fieldFragment = GetInBetweenTags(template, Tags.START_FIELD, Tags.END_FIELD).RemoveFirstAndLastNewLine();
+            propertyFragment = GetInBetweenTags(template, Tags.START_PROPERTY, Tags.END_PROPERTY).RemoveFirstAndLastNewLine();
+
+            methodFragment = GetInBetweenTags(template, Tags.START_METHOD, Tags.END_METHOD).RemoveFirstAndLastNewLine();
+            paramFragment = GetInBetweenTags(template, Tags.START_PARAM, Tags.END_PARAM).RemoveFirstAndLastNewLine();
+
+            enumFragment = GetInBetweenTags(template, Tags.START_ENUM, Tags.END_ENUM).RemoveFirstAndLastNewLine();
+            enumElementFragment = GetInBetweenTags(template, Tags.START_ENUM_ELEMENT, Tags.END_ENUM_ELEMENT).RemoveFirstAndLastNewLine();
+
+            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(fieldFragment), "");
+            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(propertyFragment), "");
+            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(methodFragment), "");
+
+            methodFragment = Regex.Replace(methodFragment, @"\r?\n?" + Regex.Escape(paramFragment), "");
+
+            enumFragment = Regex.Replace(enumFragment, @"\r?\n?" + Regex.Escape(enumElementFragment), "");
+
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
             var typees = typeDatas.Where(x => x.typeInfo == typeof(DummyClass) || x.typeInfo == typeof(DummyEnum));
             //foreach (var type in typeDatas)
             foreach(var type in typees)
@@ -142,6 +174,7 @@ namespace XMLDocGen
             Console.WriteLine("---GENERATION ENDED---");
             Console.WriteLine("Total file length: " + output.Length);
 
+<<<<<<< HEAD
             //System.IO.File.WriteAllText(Program.OutFolder + "/GeneratedExample.md", CleanUpTags(output));
 
         }
@@ -182,6 +215,11 @@ namespace XMLDocGen
 
             enumFragment = Regex.Replace(enumFragment, @"\r?\n?" + Regex.Escape(enumElementFragment), "");
         }
+=======
+            System.IO.File.WriteAllText(Program.OutFolder + "/GeneratedExample.md", CleanUpTags(output));
+
+        }
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
 
         string TypeFragment(TypeData _type)
         {
@@ -350,6 +388,7 @@ namespace XMLDocGen
 
         string GetInBetweenTags(string _input, Tags _startTag, Tags _endTag)
         {
+<<<<<<< HEAD
             return Regex.Match(_input, _startTag.Str() + "(?s)(.*?)" + _endTag.Str()).Groups[1].Value;
         }
 
@@ -374,6 +413,9 @@ namespace XMLDocGen
             str = str.ToLowerInvariant();
 
             return str;
+=======
+            return Regex.Match(_input, _startTag.Str() + "(?s)(.*)" + _endTag.Str()).Groups[1].Value;
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
         }
     }
 }

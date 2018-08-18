@@ -46,6 +46,10 @@
   <ItemGroup>
     <Compile Include="DataGatherer.cs" />
     <Compile Include="DummyClass.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="MarkdownGenerator.cs" />
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
     <Compile Include="MarkdownBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

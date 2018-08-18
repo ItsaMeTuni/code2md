@@ -26,6 +26,17 @@ namespace XMLDocGen
         {
             LoadConfigs();
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+            Console.ReadLine();
+            return;
+
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
             Program program = new Program();
             program.Generate();
 
@@ -64,7 +75,10 @@ namespace XMLDocGen
 
             TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
             replacer.Replace();
+<<<<<<< HEAD
             replacer.CreatePages();
+=======
+>>>>>>> 550f1615be502c1f18d3f40a259128b42665e19d
         }
 
         static string ToAbsolutePath(string _path)
