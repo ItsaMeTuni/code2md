@@ -141,10 +141,7 @@ namespace XMLDocGen
 
                 parameterData.parameterInfo = parameter;
 
-                if (paramNodes != null)
-                {
-                    parameterData.xmlData = GetXmlData(paramNodes.FindMemberWithName(parameter.Name));
-                }
+                parameterData.xmlData = GetXmlData(paramNodes?.FindMemberWithName(parameter.Name));
 
                 parameterDatas.Add(parameterData);
             }

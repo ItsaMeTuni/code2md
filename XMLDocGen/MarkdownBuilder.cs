@@ -32,7 +32,7 @@ namespace XMLDocGen
                 return;
             }
 
-            Value += _text + "\n";
+            Value += _text;
             EmptyLine();
         }
 
@@ -93,6 +93,11 @@ namespace XMLDocGen
         public void Space3()
         {
             AddSpace(3);
+        }
+
+        public void Bullet(string _text)
+        {
+            AddText("- " + _text);
         }
 
         /// <summary>
@@ -190,7 +195,7 @@ namespace XMLDocGen
             AddText(table);
         }
 
-        public static string CreateLink(string _text, string _toHeader, int _headerLevel)
+        public static string CreateHeaderLink(string _text, string _toHeader, int _headerLevel)
         {
             string link = "[" + _text + "](";
 
@@ -207,6 +212,11 @@ namespace XMLDocGen
             link += _toHeader + ")";
 
             return link;
+        }
+
+        public static string CreatePageLink(string _text, string _pagePath)
+        {
+            return "[" + _text + "](" + _pagePath + ")";
         }
 
         public static string CreateCode(string _code)

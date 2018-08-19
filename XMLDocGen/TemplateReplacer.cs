@@ -95,9 +95,9 @@ namespace XMLDocGen
 
         public void Replace()
         {
-            var typees = typeDatas.Where(x => x.typeInfo == typeof(DummyClass) || x.typeInfo == typeof(DummyEnum));
-            //foreach (var type in typeDatas)
-            foreach(var type in typees)
+            //var typees = typeDatas.Where(x => x.typeInfo == typeof(DummyClass) || x.typeInfo == typeof(DummyEnum));
+            foreach (var type in typeDatas)
+            //foreach(var type in typees)
             {
                 string genTypeFragment;
 
@@ -149,8 +149,10 @@ namespace XMLDocGen
             Console.WriteLine("Total file length: " + output.Length);
         }
         
-        public void CreatePages()
+        public List<PageData> CreatePages()
         {
+            List<PageData> pages = new List<PageData>();
+
             CleanOutputFolder();
 
             while (Regex.IsMatch(output, Tags.START_PAGE_NAME.Str()))
@@ -164,12 +166,16 @@ namespace XMLDocGen
 
                 pageContent = pageContent.Remove(match.Index, match.Length);
 
-                System.IO.File.WriteAllText(Program.OutFolder + "/" + ToPageName(pageName) + ".md", CleanUpTags(pageContent));
+                //System.IO.File.WriteAllText(Program.OutFolder + "/" + ToPageName(pageName) + ".md", CleanUpTags(pageContent));
 
                 int charCount = pageContent.Length + Tags.START_PAGE.Str(false).Length + Tags.END_PAGE.Str(false).Length;
 
                 output = output.Remove(0, charCount);
+
+                pages.Add(new PageData(pageName, ToPagePath(pageName), CleanUpTags(pageContent)));
             }
+
+            return pages;
         }
 
         void SetupFragmentTemplates()
@@ -328,7 +334,7 @@ namespace XMLDocGen
 
                 string str = paramFragment;
 
-                string defaultValue = param.parameterInfo.DefaultValue.ToString();
+                string defaultValue = param.parameterInfo.DefaultValue?.ToString() ?? "";
                 if(defaultValue == null || defaultValue == "")
                 {
                     defaultValue = " ";
@@ -365,11 +371,11 @@ namespace XMLDocGen
             return Regex.Match(_input, _startTag.Str() + "(?s)(.*?)" + _endTag.Str()).Groups[1].Value;
         }
 
-        string ToPageName(string _text)
+        string ToPagePath(string _text)
         {
             string str = _text;
 
-            str = Regex.Replace(str, @" |\.", "-");
+            str = Regex.Replace(str, @" |\.", "/");
 
             //Add - in between a lower-case and an upper-case letter (camelCase to "hypen-case" or whatever it's called)
             for (int i = 0; i < str.Length; i++)
@@ -385,7 +391,7 @@ namespace XMLDocGen
 
             str = str.ToLowerInvariant();
 
-            return str;
+            return "/" + str + ".md";
         }
 
         void CleanOutputFolder()
@@ -397,6 +403,20 @@ namespace XMLDocGen
             {
                 file.Delete();
             }
+        }
+    }
+
+    public struct PageData
+    {
+        public string name;
+        public string path;
+        public string content;
+
+        public PageData(string _name, string _path, string _content)
+        {
+            this.name = _name;
+            this.path = _path;
+            this.content = _content;
         }
     }
 }

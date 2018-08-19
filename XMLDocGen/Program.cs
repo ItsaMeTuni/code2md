@@ -18,6 +18,7 @@ namespace XMLDocGen
         public static string AssemblyPath { get; private set; }
         public static string OutFolder { get; private set; }
         public static string TemplatePath { get; private set; }
+        public static string CusomPagesFolderPath { get; private set; }
 
         public static Assembly assembly;
         static XmlNodeList xml;
@@ -64,18 +65,20 @@ namespace XMLDocGen
 
             TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
             replacer.Replace();
-            replacer.CreatePages();
+
+            PageGenerator generator = new PageGenerator(replacer.CreatePages());
+            generator.Generate();
         }
 
-        static string ToAbsolutePath(string _path)
+        public static string ToAbsolutePath(string _path)
         {
-            if (File.Exists(_path) || Directory.Exists(_path))
-            {
-                return _path;
-            }
-            else if (File.Exists(Environment.CurrentDirectory + _path) || Directory.Exists(Environment.CurrentDirectory + _path))
+            if (File.Exists(Environment.CurrentDirectory + _path) || Directory.Exists(Environment.CurrentDirectory + _path))
             {
                 return Environment.CurrentDirectory + _path;
+            }
+            else if (File.Exists(_path) || Directory.Exists(_path))
+            {
+                return _path;
             }
             else
             {
@@ -89,6 +92,7 @@ namespace XMLDocGen
             XmlPath = ToAbsolutePath(ConfigurationManager.AppSettings["xmlFilePath"]);
             OutFolder = ToAbsolutePath(ConfigurationManager.AppSettings["outputFolderPath"]);
             TemplatePath = ToAbsolutePath(ConfigurationManager.AppSettings["templateFilePath"]);
+            CusomPagesFolderPath = ToAbsolutePath(ConfigurationManager.AppSettings["cusomPagesFolderPath"]);
 
             Console.WriteLine("assemblyPath: " + AssemblyPath);
             Console.WriteLine("xmlPath: " + XmlPath);

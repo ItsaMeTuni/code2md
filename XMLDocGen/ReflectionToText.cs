@@ -50,7 +50,7 @@ namespace XMLDocGen
 
             if (_type.IsFromAssembly(Program.assembly))
             {
-                str = MarkdownBuilder.CreateLink(str, _type.FullName, 1);
+                str = MarkdownBuilder.CreateHeaderLink(str, _type.FullName, 1);
             }
 
             return str;
