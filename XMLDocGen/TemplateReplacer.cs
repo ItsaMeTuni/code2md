@@ -391,7 +391,7 @@ namespace XMLDocGen
 
             str = str.ToLowerInvariant();
 
-            return "/" + str + ".md";
+            return str + ".md";
         }
 
         void CleanOutputFolder()
