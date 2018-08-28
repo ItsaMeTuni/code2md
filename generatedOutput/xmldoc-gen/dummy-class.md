@@ -1,4 +1,3 @@
-
 # DummyClass
 
 **Summary:** 
@@ -14,7 +13,6 @@
 
 <br/>
 <br/>
-
 ## Properties
 
 |Modifiers            | Type            | Name            | Acessors             | Description
@@ -24,21 +22,16 @@
 
 <br/>
 <br/>
-
 ## Methods
-
-
-### **`bool` Foo(`List<String>` _a, `int` _b, `float` _c)**
-
-**Summary:** Does foo 
-**Remarks:** Remarkable indeed 
 
 | Modifiers       | Type             | Name             | Default value | Description
 |-----------------|------------------|:----------------:|---------------|------------
 | ref  |`List<String>` | \_a | ` ` | 
 |  |`int` | \_b | ` ` | 
 | out  |`float` | \_c | ` ` | 
+### **`bool` Foo(`List<String>` _a, `int` _b, `float` _c)**
 
-<br/>
-<br/>
+**Summary:** Does foo 
+**Remarks:** Remarkable indeed 
+
 

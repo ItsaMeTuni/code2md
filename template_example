@@ -1,11 +1,10 @@
 $START_CLASS$
-$START_PAGE$
-$START_PAGE_NAME$$class_full_name$$END_PAGE_NAME$
 # $class_name$
 
 **Summary:** $class_summary$
 **Remarks:** $class_remarks$
 
+$START_FIELDS$
 ## Fields
 
 |Modifiers            |Type          | Name         | Description
@@ -16,7 +15,9 @@ $END_FIELD$
 
 <br/>
 <br/>
+$END_FIELDS$
 
+$START_PROPERTIES$
 ## Properties
 
 |Modifiers            | Type            | Name            | Acessors             | Description
@@ -27,7 +28,9 @@ $END_PROPERTY$
 
 <br/>
 <br/>
+$END_PROPERTIES$
 
+$START_METHODS$
 ## Methods
 
 $START_METHOD$
@@ -37,22 +40,19 @@ $START_METHOD$
 **Summary:** $method_summary$
 **Remarks:** $method_remarks$
 
+$START_PARAMS$
 | Modifiers       | Type             | Name             | Default value | Description
 |-----------------|------------------|:----------------:|---------------|------------
 $START_PARAM$
 | $param_modifiers$ |$param_type$ | $param_name$ | $param_default_value$ | $param_desc$
 $END_PARAM$
-
-<br/>
-<br/>
+$END_PARAMS$
 
 $END_METHOD$
-$END_PAGE$
+$END_METHODS$
 $END_CLASS$
 
 $START_ENUM$
-$START_PAGE$
-$START_PAGE_NAME$$enum_full_name$$END_PAGE_NAME$
 # $enum_name$
 
 **Underlying type:** $enum_underlying_type$
@@ -66,5 +66,4 @@ $START_ENUM_ELEMENT$
 | $enum_element_name$ | $enum_element_value$
 $END_ENUM_ELEMENT$
 
-$END_PAGE$
 $END_ENUM$

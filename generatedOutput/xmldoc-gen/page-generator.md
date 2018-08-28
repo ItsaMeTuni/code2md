@@ -1,4 +1,3 @@
-
 # PageGenerator
 
 **Summary:** 
@@ -13,14 +12,6 @@
 <br/>
 <br/>
 
-## Properties
-
-|Modifiers            | Type            | Name            | Acessors             | Description
-|---------------------|-----------------|:---------------:|----------------------|------------
-
-<br/>
-<br/>
-
 ## Methods
 
 
@@ -29,11 +20,6 @@
 **Summary:** 
 **Remarks:** 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-
-<br/>
-<br/>
 
 
 ### **`Void` GenerateIndex()**
@@ -41,11 +27,6 @@
 **Summary:** 
 **Remarks:** 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-
-<br/>
-<br/>
 
 
 ### **`List<PageData>` CustomPages()**
@@ -53,9 +34,4 @@
 **Summary:** 
 **Remarks:** 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-
-<br/>
-<br/>
 

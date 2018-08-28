@@ -7,7 +7,6 @@
 - [XMLDocGen.ParameterData](xmldoc-gen/parameter-data.md)  
 - [XMLDocGen.XmlData](xmldoc-gen/xml-data.md)  
 - [XMLDocGen.DummyEnum](xmldoc-gen/dummy-enum.md)  
-- [XMLDocGen.DummyEnum](xmldoc-gen/dummy-enum.md)  
 - [XMLDocGen.DummyClass](xmldoc-gen/dummy-class.md)  
 - [XMLDocGen.PageGenerator](xmldoc-gen/page-generator.md)  
 - [XMLDocGen.Alignment](xmldoc-gen/alignment.md)  

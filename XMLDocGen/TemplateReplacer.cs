@@ -9,10 +9,6 @@ namespace XMLDocGen
 {
     public enum Tags
     {
-        START_PAGE,
-        END_PAGE,
-        START_PAGE_NAME,
-        END_PAGE_NAME,
         START_CLASS,
         END_CLASS,
         START_FIELD,
@@ -27,6 +23,14 @@ namespace XMLDocGen
         END_ENUM,
         START_ENUM_ELEMENT,
         END_ENUM_ELEMENT,
+        START_FIELDS,
+        END_FIELDS,
+        START_PROPERTIES,
+        END_PROPERTIES,
+        START_METHODS,
+        END_METHODS,
+        START_PARAMS,
+        END_PARAMS,
         class_modifiers,
         class_name,
         class_summary,
@@ -77,6 +81,10 @@ namespace XMLDocGen
         private List<TypeData> typeDatas = new List<TypeData>();
 
         private string classFragment;
+        private string fieldsFragment;
+        private string propertiesFragment;
+        private string methodsFragment;
+        private string paramsFragment;
         private string fieldFragment;
         private string methodFragment;
         private string propertyFragment;
@@ -93,8 +101,10 @@ namespace XMLDocGen
             SetupFragmentTemplates();
         }
 
-        public void Replace()
+        public List<PageData> Replace()
         {
+            List<PageData> pages = new List<PageData>();
+
             //var typees = typeDatas.Where(x => x.typeInfo == typeof(DummyClass) || x.typeInfo == typeof(DummyEnum));
             foreach (var type in typeDatas)
             //foreach(var type in typees)
@@ -123,22 +133,26 @@ namespace XMLDocGen
                     }
                     else
                     {
-                        int endTagIndex = Regex.Match(genTypeFragment, Tags.END_FIELD.Str()).Index;
+                        int endTagIndex = Regex.Match(genTypeFragment, Tags.END_FIELDS.Str()).Index;
                         genTypeFragment = genTypeFragment.Insert(endTagIndex, FieldFragments(type));
                     }
                 }
 
                 {
-                    int endTagIndex = Regex.Match(genTypeFragment, Tags.END_PROPERTY.Str()).Index;
+                    int endTagIndex = Regex.Match(genTypeFragment, Tags.END_PROPERTIES.Str()).Index;
                     genTypeFragment = genTypeFragment.Insert(endTagIndex, PropertyFragments(type));
                 }
                 
                 {
-                    int endTagIndex = Regex.Match(genTypeFragment, Tags.END_METHOD.Str()).Index;
+                    int endTagIndex = Regex.Match(genTypeFragment, Tags.END_METHODS.Str()).Index;
                     genTypeFragment = genTypeFragment.Insert(endTagIndex, MethodFragments(type));
                 }
 
                 genTypeFragment += "\n";
+
+                genTypeFragment = CleanUpTags(genTypeFragment);
+
+                pages.Add(new PageData(type.typeInfo.FullName, ToPagePath(type.typeInfo.FullName), genTypeFragment));
 
                 output += genTypeFragment;
 
@@ -147,54 +161,44 @@ namespace XMLDocGen
 
             Console.WriteLine("---GENERATION ENDED---");
             Console.WriteLine("Total file length: " + output.Length);
-        }
-        
-        public List<PageData> CreatePages()
-        {
-            List<PageData> pages = new List<PageData>();
-
-            CleanOutputFolder();
-
-            while (Regex.IsMatch(output, Tags.START_PAGE_NAME.Str()))
-            {
-                string pageContent = GetInBetweenTags(output, Tags.START_PAGE, Tags.END_PAGE);
-                string pageName = GetInBetweenTags(pageContent, Tags.START_PAGE_NAME, Tags.END_PAGE_NAME);
-
-                string matchStr = Tags.START_PAGE_NAME.Str() + pageName + Tags.END_PAGE_NAME.Str() + @"\r?\n?";
-
-                Match match = Regex.Match(pageContent, matchStr);
-
-                pageContent = pageContent.Remove(match.Index, match.Length);
-
-                //System.IO.File.WriteAllText(Program.OutFolder + "/" + ToPageName(pageName) + ".md", CleanUpTags(pageContent));
-
-                int charCount = pageContent.Length + Tags.START_PAGE.Str(false).Length + Tags.END_PAGE.Str(false).Length;
-
-                output = output.Remove(0, charCount);
-
-                pages.Add(new PageData(pageName, ToPagePath(pageName), CleanUpTags(pageContent)));
-            }
 
             return pages;
         }
-
+        
         void SetupFragmentTemplates()
         {
+            //Get the fragments
             classFragment = GetInBetweenTags(template, Tags.START_CLASS, Tags.END_CLASS).RemoveFirstAndLastNewLine();
+
+            fieldsFragment = GetInBetweenTags(template, Tags.START_FIELDS, Tags.END_FIELDS).RemoveFirstAndLastNewLine();
+            propertiesFragment = GetInBetweenTags(template, Tags.START_PROPERTIES, Tags.END_PROPERTIES).RemoveFirstAndLastNewLine();
+            methodsFragment = GetInBetweenTags(template, Tags.START_METHODS, Tags.END_METHODS).RemoveFirstAndLastNewLine();
+            paramsFragment = GetInBetweenTags(template, Tags.START_PARAMS, Tags.END_PARAMS).RemoveFirstAndLastNewLine();
+
             fieldFragment = GetInBetweenTags(template, Tags.START_FIELD, Tags.END_FIELD).RemoveFirstAndLastNewLine();
             propertyFragment = GetInBetweenTags(template, Tags.START_PROPERTY, Tags.END_PROPERTY).RemoveFirstAndLastNewLine();
-
             methodFragment = GetInBetweenTags(template, Tags.START_METHOD, Tags.END_METHOD).RemoveFirstAndLastNewLine();
             paramFragment = GetInBetweenTags(template, Tags.START_PARAM, Tags.END_PARAM).RemoveFirstAndLastNewLine();
 
             enumFragment = GetInBetweenTags(template, Tags.START_ENUM, Tags.END_ENUM).RemoveFirstAndLastNewLine();
             enumElementFragment = GetInBetweenTags(template, Tags.START_ENUM_ELEMENT, Tags.END_ENUM_ELEMENT).RemoveFirstAndLastNewLine();
 
-            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(fieldFragment), "");
-            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(propertyFragment), "");
-            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(methodFragment), "");
+            //Remove inner fragments from outer fragments
+            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(fieldsFragment), "");
+            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(propertiesFragment), "");
+            classFragment = Regex.Replace(classFragment, @"\r?\n?" + Regex.Escape(methodsFragment), "");
 
-            methodFragment = Regex.Replace(methodFragment, @"\r?\n?" + Regex.Escape(paramFragment), "");
+            fieldsFragment = Regex.Replace(fieldsFragment, @"\r?\n?" + Regex.Escape(fieldFragment), "");
+            propertiesFragment = Regex.Replace(propertiesFragment, @"\r?\n?" + Regex.Escape(propertyFragment), "");
+            methodsFragment = Regex.Replace(methodsFragment, @"\r?\n?" + Regex.Escape(methodFragment), "");
+
+            methodFragment = Regex.Replace(methodFragment, @"\r?\n?" + Regex.Escape(paramsFragment), "");
+
+            paramsFragment = Regex.Replace(paramsFragment, @"\r?\n?" + Regex.Escape(paramFragment), "");
+
+            Console.WriteLine(methodFragment);
+            Console.WriteLine("--------------------------------------");
+            Console.WriteLine(paramsFragment);
 
             enumFragment = Regex.Replace(enumFragment, @"\r?\n?" + Regex.Escape(enumElementFragment), "");
         }
@@ -228,6 +232,11 @@ namespace XMLDocGen
         {
             string retStr = "";
 
+            if(_type.fields.Count > 0)
+            {
+                retStr = fieldsFragment;
+            }
+
             for (int i = 0; i < _type.fields.Count; i++)
             {
                 FieldData field = _type.fields[i];
@@ -241,7 +250,8 @@ namespace XMLDocGen
 
                 str += "\n";
 
-                retStr += str;
+                int endTagIndex = Regex.Match(retStr, Tags.END_FIELD.Str()).Index;
+                retStr = retStr.Insert(endTagIndex, str);
             }
 
             return retStr;
@@ -279,6 +289,11 @@ namespace XMLDocGen
         {
             string retStr = "";
 
+            if (_type.properties.Count > 0)
+            {
+                retStr = propertiesFragment;
+            }
+
             for (int i = 0; i < _type.properties.Count; i++)
             {
                 PropertyData property = _type.properties[i];
@@ -293,7 +308,8 @@ namespace XMLDocGen
 
                 str += "\n";
 
-                retStr += str;
+                int endTagIndex = Regex.Match(retStr, Tags.END_PROPERTY.Str()).Index;
+                retStr = retStr.Insert(endTagIndex, str);
             }
 
             return retStr;
@@ -302,6 +318,11 @@ namespace XMLDocGen
         string MethodFragments(TypeData _type)
         {
             string retStr = "";
+
+            if (_type.methods.Count > 0)
+            {
+                retStr = methodsFragment;
+            }
 
             for (int i = 0; i < _type.methods.Count; i++)
             {
@@ -313,12 +334,17 @@ namespace XMLDocGen
                 str = Regex.Replace(str, Tags.method_summary.Str(), method.xmlData.summary);
                 str = Regex.Replace(str, Tags.method_remarks.Str(), method.xmlData.remarks);
 
-                int endTagIndex = Regex.Match(str, Tags.END_PARAM.Str()).Index;
-                str = str.Insert(endTagIndex, ParamFragments(method));
+                {
+                    int endTagIndex = Regex.Match(str, Tags.END_PARAM.Str()).Index;
+                    str = str.Insert(endTagIndex, ParamFragments(method));
+                }
 
                 str += "\n";
 
-                retStr += str;
+                {
+                    int endTagIndex = Regex.Match(retStr, Tags.END_METHOD.Str()).Index;
+                    retStr = retStr.Insert(endTagIndex, str);
+                }
             }
 
             return retStr;
@@ -327,6 +353,11 @@ namespace XMLDocGen
         string ParamFragments(MethodData _method)
         {
             string retStr = "";
+
+            if(_method.parameters.Count > 0)
+            {
+                retStr = paramsFragment;
+            }
 
             for (int i = 0; i < _method.parameters.Count; i++)
             {
@@ -348,7 +379,8 @@ namespace XMLDocGen
 
                 str += "\n";
 
-                retStr += str;
+                int endTagIndex = Regex.Match(retStr, Tags.END_PARAM.Str()).Index;
+                retStr = retStr.Insert(endTagIndex, str);
             }
 
             return retStr;

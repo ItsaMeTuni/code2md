@@ -64,9 +64,8 @@ namespace XMLDocGen
             List<TypeData> typeDatas = new DataGatherer(assembly, xml).GetTypeData();
 
             TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
-            replacer.Replace();
 
-            PageGenerator generator = new PageGenerator(replacer.CreatePages());
+            PageGenerator generator = new PageGenerator(replacer.Replace());
             generator.Generate();
         }
 

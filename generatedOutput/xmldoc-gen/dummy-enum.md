@@ -1,4 +1,3 @@
-
 # DummyEnum
 
 **Underlying type:** `int`

@@ -1,4 +1,3 @@
-
 # Program
 
 **Summary:** 
@@ -13,7 +12,6 @@
 
 <br/>
 <br/>
-
 ## Properties
 
 |Modifiers            | Type            | Name            | Acessors             | Description
@@ -26,21 +24,16 @@
 
 <br/>
 <br/>
-
 ## Methods
 
-
+| Modifiers       | Type             | Name             | Default value | Description
+|-----------------|------------------|:----------------:|---------------|------------
+|  |`string[]` | args | ` ` | 
 ### **`Void` Main(`string[]` args)**
 
 **Summary:** 
 **Remarks:** 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`string[]` | args | ` ` | 
-
-<br/>
-<br/>
 
 
 ### **`Void` Generate()**
@@ -48,24 +41,15 @@
 **Summary:** 
 **Remarks:** 
 
+
 | Modifiers       | Type             | Name             | Default value | Description
 |-----------------|------------------|:----------------:|---------------|------------
-
-<br/>
-<br/>
-
-
+|  |`string` | \_path | ` ` | 
 ### **`string` ToAbsolutePath(`string` _path)**
 
 **Summary:** 
 **Remarks:** 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`string` | \_path | ` ` | 
-
-<br/>
-<br/>
 
 
 ### **`Void` LoadConfigs()**
@@ -73,9 +57,4 @@
 **Summary:** 
 **Remarks:** 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-
-<br/>
-<br/>
 

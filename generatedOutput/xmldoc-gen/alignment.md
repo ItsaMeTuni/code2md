@@ -1,4 +1,3 @@
-
 # Alignment
 
 **Underlying type:** `int`

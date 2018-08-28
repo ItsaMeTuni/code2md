@@ -1,4 +1,3 @@
-
 # PropertyData
 
 **Summary:** 
@@ -13,14 +12,4 @@
 
 <br/>
 <br/>
-
-## Properties
-
-|Modifiers            | Type            | Name            | Acessors             | Description
-|---------------------|-----------------|:---------------:|----------------------|------------
-
-<br/>
-<br/>
-
-## Methods
 
