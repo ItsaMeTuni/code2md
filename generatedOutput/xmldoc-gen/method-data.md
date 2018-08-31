@@ -1,15 +1,25 @@
 # MethodData
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 ## Fields
 
-|Modifiers            |Type          | Name         | Description
-|---------------------|--------------|:------------:|------------
-|  | `MethodInfo` | methodInfo | **Summary:**  **Remarks:** 
-|  | [`XmlData`](#xmldocgenxmldata) | xmlData | **Summary:**  **Remarks:** 
-|  | `List<ParameterData>` | parameters | **Summary:**  **Remarks:** 
+#### ` MethodInfo methodInfo`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` [XmlData](#xmldocgenxmldata) xmlData`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` List<ParameterData> parameters`
+**Summary:** 
+<br/>
+**Remarks:** 
 
 <br/>
 <br/>

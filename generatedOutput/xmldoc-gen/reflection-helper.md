@@ -1,36 +1,39 @@
 # ReflectionHelper
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 
 
 ## Methods
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`FieldInfo` | \_field | ` ` | 
-### **`string` GetFullName(`FieldInfo` _field)**
+```
+ FieldInfo _field   //
+```
+### **string GetFullName(FieldInfo _field)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`PropertyInfo` | \_property | ` ` | 
-### **`string` GetFullName(`PropertyInfo` _property)**
+```
+ PropertyInfo _property   //
+```
+### **string GetFullName(PropertyInfo _property)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`MethodInfo` | \_property | ` ` | 
-### **`string` GetFullName(`MethodInfo` _property)**
+```
+ MethodInfo _property   //
+```
+### **string GetFullName(MethodInfo _property)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
-
 

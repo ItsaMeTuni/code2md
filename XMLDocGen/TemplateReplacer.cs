@@ -33,34 +33,42 @@ namespace XMLDocGen
         END_PARAMS,
         class_modifiers,
         class_name,
+        escaped_class_name,
         class_summary,
         class_remarks,
         field_modifiers,
         field_type,
         field_name,
+        escaped_field_name,
         field_summary,
         field_remarks,
         property_modifiers,
         property_type,
         property_name,
+        escaped_property_name,
         property_acessors,
         property_summary,
         property_remarks,
         method_modifiers,
         method_name,
+        escaped_method_name,
         method_signature,
+        escaped_method_signature,
         method_summary,
         method_remarks,
         param_modifiers,
         param_type,
         param_name,
+        escaped_param_name,
         param_default_value,
         param_desc,
         enum_name,
+        escaped_enum_name,
         enum_underlying_type,
         enum_summary,
         enum_remarks,
         enum_element_name,
+        escaped_enum_element_name,
         enum_element_value,
         enum_element_summary,
         enum_element_remarks,
@@ -70,7 +78,9 @@ namespace XMLDocGen
         method_extra_doc,
         enum_extra_doc,
         class_full_name,
-        enum_full_name
+        escaped_class_full_name,
+        enum_full_name,
+        escaped_enum_full_name
     }
 
     class TemplateReplacer
@@ -208,6 +218,7 @@ namespace XMLDocGen
             string str = classFragment;
 
             str = Regex.Replace(str, Tags.class_name.Str(), _type.typeInfo.Name);
+            str = Regex.Replace(str, Tags.escaped_class_name.Str(), _type.typeInfo.Name.MarkdownEscape());
             str = Regex.Replace(str, Tags.class_summary.Str(), _type.xmlData.summary);
             str = Regex.Replace(str, Tags.class_remarks.Str(), _type.xmlData.remarks);
             str = Regex.Replace(str, Tags.class_full_name.Str(), _type.typeInfo.FullName);
@@ -220,6 +231,7 @@ namespace XMLDocGen
             string str = enumFragment;
 
             str = Regex.Replace(str, Tags.enum_name.Str(), _type.typeInfo.Name);
+            str = Regex.Replace(str, Tags.escaped_enum_name.Str(), _type.typeInfo.Name.MarkdownEscape());
             str = Regex.Replace(str, Tags.enum_underlying_type.Str(), Enum.GetUnderlyingType(_type.typeInfo).GetMarkdownTypeName());
             str = Regex.Replace(str, Tags.enum_summary.Str(), _type.xmlData.summary);
             str = Regex.Replace(str, Tags.enum_remarks.Str(), _type.xmlData.remarks);
@@ -244,6 +256,7 @@ namespace XMLDocGen
                 string str = fieldFragment;
 
                 str = Regex.Replace(str, Tags.field_name.Str(), field.fieldInfo.Name);
+                str = Regex.Replace(str, Tags.escaped_field_name.Str(), field.fieldInfo.Name.MarkdownEscape());
                 str = Regex.Replace(str, Tags.field_type.Str(), field.fieldInfo.FieldType.GetMarkdownTypeName());
                 str = Regex.Replace(str, Tags.field_summary.Str(), field.xmlData.summary);
                 str = Regex.Replace(str, Tags.field_remarks.Str(), field.xmlData.remarks);
@@ -270,9 +283,10 @@ namespace XMLDocGen
 
                 string str = enumElementFragment;
 
-                string elementValue = MarkdownBuilder.CreateCode(Convert.ChangeType(values.GetValue(i), Enum.GetUnderlyingType(_type.typeInfo)).ToString());
+                string elementValue = Convert.ChangeType(values.GetValue(i), Enum.GetUnderlyingType(_type.typeInfo)).ToString();
 
                 str = Regex.Replace(str, Tags.enum_element_name.Str(), names[i]);
+                str = Regex.Replace(str, Tags.escaped_enum_element_name.Str(), names[i].MarkdownEscape());
                 str = Regex.Replace(str, Tags.enum_element_value.Str(), elementValue);
                 str = Regex.Replace(str, Tags.enum_element_summary.Str(), field.xmlData.summary);
                 str = Regex.Replace(str, Tags.enum_element_remarks.Str(), field.xmlData.remarks);
@@ -301,6 +315,7 @@ namespace XMLDocGen
                 string str = propertyFragment;
 
                 str = Regex.Replace(str, Tags.property_name.Str(), property.propertyInfo.Name);
+                str = Regex.Replace(str, Tags.escaped_property_name.Str(), property.propertyInfo.Name.MarkdownEscape());
                 str = Regex.Replace(str, Tags.property_type.Str(), property.propertyInfo.PropertyType.GetMarkdownTypeName());
                 str = Regex.Replace(str, Tags.property_acessors.Str(), property.propertyInfo.GetAcessorsStr());
                 str = Regex.Replace(str, Tags.property_summary.Str(), property.xmlData.summary);
@@ -331,6 +346,9 @@ namespace XMLDocGen
                 string str = methodFragment;
 
                 str = Regex.Replace(str, Tags.method_signature.Str(), method.methodInfo.GetTextSignature());
+                str = Regex.Replace(str, Tags.escaped_method_signature.Str(), method.methodInfo.GetTextSignature().MarkdownEscape());
+                str = Regex.Replace(str, Tags.method_name.Str(), method.methodInfo.Name);
+                str = Regex.Replace(str, Tags.escaped_method_name.Str(), method.methodInfo.Name);
                 str = Regex.Replace(str, Tags.method_summary.Str(), method.xmlData.summary);
                 str = Regex.Replace(str, Tags.method_remarks.Str(), method.xmlData.remarks);
 
@@ -373,8 +391,9 @@ namespace XMLDocGen
 
                 str = Regex.Replace(str, Tags.param_modifiers.Str(), param.parameterInfo.GetModifiersString());
                 str = Regex.Replace(str, Tags.param_type.Str(), param.parameterInfo.ParameterType.GetMarkdownTypeName());
-                str = Regex.Replace(str, Tags.param_name.Str(), param.parameterInfo.Name.MarkdownEscape());
-                str = Regex.Replace(str, Tags.param_default_value.Str(), MarkdownBuilder.CreateCode(defaultValue));
+                str = Regex.Replace(str, Tags.param_name.Str(), param.parameterInfo.Name);
+                str = Regex.Replace(str, Tags.escaped_param_name.Str(), param.parameterInfo.Name.MarkdownEscape());
+                str = Regex.Replace(str, Tags.param_default_value.Str(), defaultValue);
                 str = Regex.Replace(str, Tags.param_desc.Str(), param.xmlData.summary);
 
                 str += "\n";

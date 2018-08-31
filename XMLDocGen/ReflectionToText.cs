@@ -46,8 +46,6 @@ namespace XMLDocGen
                 }
             }
 
-            str = MarkdownBuilder.CreateCode(str);
-
             if (_type.IsFromAssembly(Program.assembly))
             {
                 str = MarkdownBuilder.CreateHeaderLink(str, _type.FullName, 1);

@@ -1,13 +1,13 @@
 # Alignment
 
-**Underlying type:** `int`
+**Underlying type:** int
 
 **Summary:** 
 **Remarks:** 
 
 |ElementName         | Element value
 |--------------------|--------------
-| Left | `0`
-| Right | `1`
-| Center | `2`
+| Left | 0
+| Right | 1
+| Center | 2
 

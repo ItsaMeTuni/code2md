@@ -1,37 +1,55 @@
 # DummyClass
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 ## Fields
 
-|Modifiers            |Type          | Name         | Description
-|---------------------|--------------|:------------:|------------
-|  | `string` | bar | **Summary:** What's this  **Remarks:** Sure, why not? 
-|  | `string` | fubar | **Summary:** WHAT EVER  **Remarks:** SuRR, wHy N00t? 
-|  | `string` | dafuq | **Summary:** I'm lost already  **Remarks:** LorEm ipSuM DolOR sIT aMeT 
+#### ` string bar`
+**Summary:** What's this 
+<br/>
+**Remarks:** Sure, why not? 
+#### ` string fubar`
+**Summary:** WHAT EVER 
+<br/>
+**Remarks:** SuRR, wHy N00t? 
+#### ` string dafuq`
+**Summary:** I'm lost already 
+<br/>
+**Remarks:** LorEm ipSuM DolOR sIT aMeT 
 
 <br/>
 <br/>
 ## Properties
 
-|Modifiers            | Type            | Name            | Acessors             | Description
-|---------------------|-----------------|:---------------:|----------------------|------------
-| | `string` | aProp | $property_accessors$ | **Summary:** It has intersting qualities  **Remarks:** HEYA E HEYEHEYEHYEHYA E 
-| | `string` | bProp | $property_accessors$ | **Summary:** It has second tier qualities  **Remarks:** HEYAFASDFEAS 
+#### ` string aProp` 
+**Acessors:** $property_accessors$
+<br/>
+**Summary:** It has intersting qualities 
+<br/>
+**Remarks:** HEYA E HEYEHEYEHYEHYA E 
+#### ` string bProp` 
+**Acessors:** $property_accessors$
+<br/>
+**Summary:** It has second tier qualities 
+<br/>
+**Remarks:** HEYAFASDFEAS 
 
 <br/>
 <br/>
 ## Methods
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-| ref  |`List<String>` | \_a | ` ` | 
-|  |`int` | \_b | ` ` | 
-| out  |`float` | \_c | ` ` | 
-### **`bool` Foo(`List<String>` _a, `int` _b, `float` _c)**
+```
+ref  List<String> _a   //
+ int _b   //
+out  float _c   //
+```
+### **bool Foo(List<String> _a, int _b, float _c)**
 
 **Summary:** Does foo 
+<br/>
 **Remarks:** Remarkable indeed 
-
 

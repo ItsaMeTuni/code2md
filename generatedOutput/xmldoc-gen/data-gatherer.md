@@ -1,15 +1,25 @@
 # DataGatherer
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 ## Fields
 
-|Modifiers            |Type          | Name         | Description
-|---------------------|--------------|:------------:|------------
-|  | `Assembly` | assembly | **Summary:**  **Remarks:** 
-|  | `XmlNodeList` | nodeList | **Summary:**  **Remarks:** 
-|  | `BindingFlags` | bindingFlags | **Summary:**  **Remarks:** 
+#### ` Assembly assembly`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` XmlNodeList nodeList`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` BindingFlags bindingFlags`
+**Summary:** 
+<br/>
+**Remarks:** 
 
 <br/>
 <br/>
@@ -17,54 +27,54 @@
 ## Methods
 
 
-### **`List<TypeData>` GetTypeData()**
+### **List<TypeData> GetTypeData()**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`Type` | \_type | ` ` | 
-### **`List<FieldData>` GetFieldData(`Type` _type)**
+```
+ Type _type   //
+```
+### **List<FieldData> GetFieldData(Type _type)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`Type` | \_type | ` ` | 
-### **`List<PropertyData>` GetPropertyData(`Type` _type)**
+```
+ Type _type   //
+```
+### **List<PropertyData> GetPropertyData(Type _type)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`Type` | \_type | ` ` | 
-### **`List<MethodData>` GetMethodData(`Type` _type)**
+```
+ Type _type   //
+```
+### **List<MethodData> GetMethodData(Type _type)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`MethodInfo` | \_method | ` ` | 
-### **`List<ParameterData>` GetParameterData(`MethodInfo` _method)**
+```
+ MethodInfo _method   //
+```
+### **List<ParameterData> GetParameterData(MethodInfo _method)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`XmlNode` | \_node | ` ` | 
-### **[`XmlData`](#xmldocgenxmldata) GetXmlData(`XmlNode` _node)**
+```
+ XmlNode _node   //
+```
+### **[XmlData](#xmldocgenxmldata) GetXmlData(XmlNode _node)**
 
 **Summary:** 
+<br/>
 **Remarks:** 
-
 

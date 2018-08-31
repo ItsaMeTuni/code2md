@@ -1,13 +1,17 @@
 # PageGenerator
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 ## Fields
 
-|Modifiers            |Type          | Name         | Description
-|---------------------|--------------|:------------:|------------
-|  | `List<PageData>` | pages | **Summary:**  **Remarks:** 
+#### ` List<PageData> pages`
+**Summary:** 
+<br/>
+**Remarks:** 
 
 <br/>
 <br/>
@@ -15,23 +19,23 @@
 ## Methods
 
 
-### **`Void` Generate()**
+### **Void Generate()**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
 
-
-### **`Void` GenerateIndex()**
+### **Void GenerateIndex()**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
 
-
-### **`List<PageData>` CustomPages()**
+### **List<PageData> CustomPages()**
 
 **Summary:** 
+<br/>
 **Remarks:** 
-
 

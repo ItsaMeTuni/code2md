@@ -1,17 +1,33 @@
 # TypeData
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 ## Fields
 
-|Modifiers            |Type          | Name         | Description
-|---------------------|--------------|:------------:|------------
-|  | `TypeInfo` | typeInfo | **Summary:**  **Remarks:** 
-|  | [`XmlData`](#xmldocgenxmldata) | xmlData | **Summary:**  **Remarks:** 
-|  | `List<FieldData>` | fields | **Summary:**  **Remarks:** 
-|  | `List<PropertyData>` | properties | **Summary:**  **Remarks:** 
-|  | `List<MethodData>` | methods | **Summary:**  **Remarks:** 
+#### ` TypeInfo typeInfo`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` [XmlData](#xmldocgenxmldata) xmlData`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` List<FieldData> fields`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` List<PropertyData> properties`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` List<MethodData> methods`
+**Summary:** 
+<br/>
+**Remarks:** 
 
 <br/>
 <br/>

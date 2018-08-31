@@ -1,27 +1,73 @@
 # TemplateReplacer
 
-**Summary:** 
-**Remarks:** 
+### Summary
+
+
+### Remarks
+
 
 ## Fields
 
-|Modifiers            |Type          | Name         | Description
-|---------------------|--------------|:------------:|------------
-|  | `string` | template | **Summary:**  **Remarks:** 
-|  | `List<TypeData>` | typeDatas | **Summary:**  **Remarks:** 
-|  | `string` | classFragment | **Summary:**  **Remarks:** 
-|  | `string` | fieldsFragment | **Summary:**  **Remarks:** 
-|  | `string` | propertiesFragment | **Summary:**  **Remarks:** 
-|  | `string` | methodsFragment | **Summary:**  **Remarks:** 
-|  | `string` | paramsFragment | **Summary:**  **Remarks:** 
-|  | `string` | fieldFragment | **Summary:**  **Remarks:** 
-|  | `string` | methodFragment | **Summary:**  **Remarks:** 
-|  | `string` | propertyFragment | **Summary:**  **Remarks:** 
-|  | `string` | enumElementFragment | **Summary:**  **Remarks:** 
-|  | `string` | enumFragment | **Summary:**  **Remarks:** 
-|  | `string` | paramFragment | **Summary:**  **Remarks:** 
-|  | `string` | output | **Summary:**  **Remarks:** 
-|  | `Char` | tagChar | **Summary:**  **Remarks:** 
+#### ` string template`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` List<TypeData> typeDatas`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string classFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string fieldsFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string propertiesFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string methodsFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string paramsFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string fieldFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string methodFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string propertyFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string enumElementFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string enumFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string paramFragment`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` string output`
+**Summary:** 
+<br/>
+**Remarks:** 
+#### ` Char tagChar`
+**Summary:** 
+<br/>
+**Remarks:** 
 
 <br/>
 <br/>
@@ -29,115 +75,115 @@
 ## Methods
 
 
-### **`List<PageData>` Replace()**
+### **List<PageData> Replace()**
 
 **Summary:** 
+<br/>
 **Remarks:** 
 
 
-
-### **`Void` SetupFragmentTemplates()**
+### **Void SetupFragmentTemplates()**
 
 **Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [TypeData](#xmldocgentypedata) _type   //
+```
+### **string TypeFragment([TypeData](#xmldocgentypedata) _type)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [TypeData](#xmldocgentypedata) _type   //
+```
+### **string EnumTypeFragment([TypeData](#xmldocgentypedata) _type)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [TypeData](#xmldocgentypedata) _type   //
+```
+### **string FieldFragments([TypeData](#xmldocgentypedata) _type)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [TypeData](#xmldocgentypedata) _type   //
+```
+### **string EnumElementFragment([TypeData](#xmldocgentypedata) _type)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [TypeData](#xmldocgentypedata) _type   //
+```
+### **string PropertyFragments([TypeData](#xmldocgentypedata) _type)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [TypeData](#xmldocgentypedata) _type   //
+```
+### **string MethodFragments([TypeData](#xmldocgentypedata) _type)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ [MethodData](#xmldocgenmethoddata) _method   //
+```
+### **string ParamFragments([MethodData](#xmldocgenmethoddata) _method)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ string _in   //
+```
+### **string CleanUpTags(string _in)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ string _input   //
+ [Tags](#xmldocgentags) _startTag   //
+ [Tags](#xmldocgentags) _endTag   //
+```
+### **string GetInBetweenTags(string _input, [Tags](#xmldocgentags) _startTag, [Tags](#xmldocgentags) _endTag)**
+
+**Summary:** 
+<br/>
+**Remarks:** 
+
+```
+ string _text   //
+```
+### **string ToPagePath(string _text)**
+
+**Summary:** 
+<br/>
 **Remarks:** 
 
 
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`TypeData`](#xmldocgentypedata) | \_type | ` ` | 
-### **`string` TypeFragment([`TypeData`](#xmldocgentypedata) _type)**
+### **Void CleanOutputFolder()**
 
 **Summary:** 
+<br/>
 **Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`TypeData`](#xmldocgentypedata) | \_type | ` ` | 
-### **`string` EnumTypeFragment([`TypeData`](#xmldocgentypedata) _type)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`TypeData`](#xmldocgentypedata) | \_type | ` ` | 
-### **`string` FieldFragments([`TypeData`](#xmldocgentypedata) _type)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`TypeData`](#xmldocgentypedata) | \_type | ` ` | 
-### **`string` EnumElementFragment([`TypeData`](#xmldocgentypedata) _type)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`TypeData`](#xmldocgentypedata) | \_type | ` ` | 
-### **`string` PropertyFragments([`TypeData`](#xmldocgentypedata) _type)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`TypeData`](#xmldocgentypedata) | \_type | ` ` | 
-### **`string` MethodFragments([`TypeData`](#xmldocgentypedata) _type)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |[`MethodData`](#xmldocgenmethoddata) | \_method | ` ` | 
-### **`string` ParamFragments([`MethodData`](#xmldocgenmethoddata) _method)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`string` | \_in | ` ` | 
-### **`string` CleanUpTags(`string` _in)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`string` | \_input | ` ` | 
-|  |[`Tags`](#xmldocgentags) | \_startTag | ` ` | 
-|  |[`Tags`](#xmldocgentags) | \_endTag | ` ` | 
-### **`string` GetInBetweenTags(`string` _input, [`Tags`](#xmldocgentags) _startTag, [`Tags`](#xmldocgentags) _endTag)**
-
-**Summary:** 
-**Remarks:** 
-
-
-| Modifiers       | Type             | Name             | Default value | Description
-|-----------------|------------------|:----------------:|---------------|------------
-|  |`string` | \_text | ` ` | 
-### **`string` ToPagePath(`string` _text)**
-
-**Summary:** 
-**Remarks:** 
-
-
-
-### **`Void` CleanOutputFolder()**
-
-**Summary:** 
-**Remarks:** 
-
 
