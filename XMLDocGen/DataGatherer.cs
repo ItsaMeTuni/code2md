@@ -35,6 +35,7 @@ namespace XMLDocGen
                     continue;
                 }
 
+
                 TypeData typeData = new TypeData();
 
                 typeData.typeInfo = type.GetTypeInfo();
@@ -42,6 +43,18 @@ namespace XMLDocGen
                 typeData.properties = GetPropertyData(type);
                 typeData.methods = GetMethodData(type);
                 typeData.xmlData = GetXmlData(nodeList.FindMemberWithName(type.FullName));
+
+                if (type.IsEnum)
+                {
+                    typeData.specialTypeData = new EnumTypeSpecialData()
+                    {
+                        underlyingType = Enum.GetUnderlyingType(type)
+                    };
+                }
+                else
+                {
+                    typeData.specialTypeData = null;
+                }
 
                 typesData.Add(typeData);
             }
@@ -53,9 +66,29 @@ namespace XMLDocGen
         {
             List<FieldData> fieldsData = new List<FieldData>();
 
+            string[] enumStrValues = null;
+            if (_type.IsEnum)
+            {
+                Array values = Enum.GetValues(_type);
+                Type underlyingType = Enum.GetUnderlyingType(_type);
+
+                enumStrValues = new string[values.Length];
+
+                for (int i = 0; i < values.Length; i++)
+                {
+                    enumStrValues[i] = Convert.ChangeType(values.GetValue(i), underlyingType).ToString();
+                }
+            }
+
             FieldInfo[] fields = _type.GetFields(bindingFlags);
             for (int iField = 0; iField < fields.Length; iField++)
             {
+                //Skip first field (first field in an enum is __value)
+                if (_type.IsEnum && iField == 0)
+                {
+                    continue;
+                }
+
                 FieldInfo field = fields[iField];
 
                 if (field.IsCompilerGenerated())
@@ -67,6 +100,14 @@ namespace XMLDocGen
 
                 fieldData.fieldInfo = field;
                 fieldData.xmlData = GetXmlData(nodeList.FindFieldMemberWithName(field.GetFullName()));
+
+                if(_type.IsEnum)
+                {
+                    fieldData.specialFieldData = new EnumFieldSpecialData()
+                    {
+                        value = enumStrValues[iField]
+                    };
+                }
 
                 fieldsData.Add(fieldData);
             }
@@ -170,6 +211,8 @@ namespace XMLDocGen
         public List<FieldData> fields;
         public List<PropertyData> properties;
         public List<MethodData> methods;
+
+        public SpecialData specialTypeData;
     }
 
     class MethodData
@@ -184,6 +227,8 @@ namespace XMLDocGen
     {
         public FieldInfo fieldInfo;
         public XmlData xmlData;
+
+        public SpecialData specialFieldData;
     }
 
     class PropertyData
@@ -204,5 +249,18 @@ namespace XMLDocGen
         public string remarks;
         public string returns;
         public string example;
+    }
+
+    class SpecialData { }
+
+    class EnumFieldSpecialData : SpecialData
+    {
+        //Value is stored in a string because it can be one of many types (like uint, int, long, ushort, etc)
+        public string value;
+    }
+
+    class EnumTypeSpecialData : SpecialData
+    {
+        public Type underlyingType;
     }
 }

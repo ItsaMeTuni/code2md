@@ -274,20 +274,16 @@ namespace XMLDocGen
         {
             string retStr = "";
 
-            string[] names = Enum.GetNames(_type.typeInfo);
-            Array values = Enum.GetValues(_type.typeInfo);
-
-            for (int i = 0; i < names.Length; i++)
+            for (int i = 0; i < _type.fields.Count; i++)
             {
-                FieldData field = _type.fields[i+1]; //First field is the __value field
+                FieldData field = _type.fields[i];
+                EnumFieldSpecialData specialData = (EnumFieldSpecialData)field.specialFieldData;
 
                 string str = enumElementFragment;
 
-                string elementValue = Convert.ChangeType(values.GetValue(i), Enum.GetUnderlyingType(_type.typeInfo)).ToString();
-
-                str = Regex.Replace(str, Tags.enum_element_name.Str(), names[i]);
-                str = Regex.Replace(str, Tags.escaped_enum_element_name.Str(), names[i].MarkdownEscape());
-                str = Regex.Replace(str, Tags.enum_element_value.Str(), elementValue);
+                str = Regex.Replace(str, Tags.enum_element_name.Str(), field.fieldInfo.Name);
+                str = Regex.Replace(str, Tags.escaped_enum_element_name.Str(), field.fieldInfo.Name.MarkdownEscape());
+                str = Regex.Replace(str, Tags.enum_element_value.Str(), specialData.value);
                 str = Regex.Replace(str, Tags.enum_element_summary.Str(), field.xmlData.summary);
                 str = Regex.Replace(str, Tags.enum_element_remarks.Str(), field.xmlData.remarks);
 
@@ -455,9 +451,192 @@ namespace XMLDocGen
                 file.Delete();
             }
         }
+
+        string GetTagValue(TagContext _context, Tags _tag)
+        {
+            EnumTypeSpecialData enumTypeSpecialData = null;
+            EnumFieldSpecialData enumFieldSpecialData = null;
+
+            if (_context.typeData.typeInfo.IsEnum)
+            {
+                enumTypeSpecialData = (EnumTypeSpecialData)_context.typeData.specialTypeData;
+                enumFieldSpecialData = (EnumFieldSpecialData)_context.fieldData.specialFieldData;
+            }
+
+            //CLASS
+            if (_tag == Tags.class_name)
+            {
+                return _context.typeData.typeInfo.Name;
+            }
+            else if(_tag == Tags.escaped_class_name)
+            {
+                return _context.typeData.typeInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.class_summary)
+            {
+                return _context.typeData.xmlData.summary;
+            }
+            else if (_tag == Tags.class_remarks)
+            {
+                return _context.typeData.xmlData.remarks;
+            }
+            else if (_tag == Tags.class_full_name)
+            {
+                return _context.typeData.typeInfo.FullName;
+            }
+            //ENUM
+            else if (_tag == Tags.enum_name)
+            {
+                return _context.typeData.typeInfo.Name;
+            }
+            else if (_tag == Tags.escaped_enum_name)
+            {
+                return _context.typeData.typeInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.enum_underlying_type)
+            {
+                return enumTypeSpecialData.underlyingType.GetMarkdownTypeName();
+            }
+            else if (_tag == Tags.enum_summary)
+            {
+                return _context.typeData.xmlData.summary;
+            }
+            else if (_tag == Tags.enum_remarks)
+            {
+                return _context.typeData.xmlData.remarks;
+            }
+            else if (_tag == Tags.enum_full_name)
+            {
+                return _context.typeData.typeInfo.FullName;
+            }
+            //FIELD
+            else if (_tag == Tags.field_name)
+            {
+                return _context.fieldData.fieldInfo.Name;
+            }
+            else if (_tag == Tags.escaped_field_name)
+            {
+                return _context.fieldData.fieldInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.field_type)
+            {
+                return _context.fieldData.fieldInfo.FieldType.GetMarkdownTypeName();
+            }
+            else if (_tag == Tags.field_summary)
+            {
+                return _context.fieldData.xmlData.remarks;
+            }
+            else if (_tag == Tags.field_remarks)
+            {
+                return _context.fieldData.xmlData.summary;
+            }
+            //ENUM ELEMENT
+            else if (_tag == Tags.enum_element_name)
+            {
+                return _context.fieldData.fieldInfo.Name;
+            }
+            else if (_tag == Tags.escaped_enum_element_name)
+            {
+                return _context.fieldData.fieldInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.enum_element_value)
+            {
+                return enumFieldSpecialData.value;
+            }
+            else if (_tag == Tags.enum_element_summary)
+            {
+                return _context.fieldData.xmlData.summary;
+            }
+            else if (_tag == Tags.enum_element_remarks)
+            {
+                return _context.fieldData.xmlData.remarks;
+            }
+            //PROPERTY
+            else if (_tag == Tags.property_name)
+            {
+                return _context.propertyData.propertyInfo.Name;
+            }
+            else if (_tag == Tags.escaped_property_name)
+            {
+                return _context.propertyData.propertyInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.property_type)
+            {
+                return _context.propertyData.propertyInfo.PropertyType.GetMarkdownTypeName();
+            }
+            else if (_tag == Tags.property_acessors)
+            {
+                return _context.propertyData.propertyInfo.GetAcessorsStr();
+            }
+            else if (_tag == Tags.property_summary)
+            {
+                return _context.propertyData.xmlData.summary;
+            }
+            else if (_tag == Tags.property_remarks)
+            {
+                return _context.propertyData.xmlData.remarks;
+            }
+            //METHOD
+            else if (_tag == Tags.method_signature)
+            {
+                return _context.methodData.methodInfo.GetTextSignature();
+            }
+            else if (_tag == Tags.escaped_method_signature)
+            {
+                return _context.methodData.methodInfo.GetTextSignature().MarkdownEscape();
+            }
+            else if (_tag == Tags.method_name)
+            {
+                return _context.methodData.methodInfo.Name;
+            }
+            else if (_tag == Tags.escaped_method_name)
+            {
+                return _context.methodData.methodInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.method_summary)
+            {
+                return _context.methodData.xmlData.summary;
+            }
+            else if (_tag == Tags.method_remarks)
+            {
+                return _context.methodData.xmlData.remarks;
+            }
+            //PARAMETER
+            else if (_tag == Tags.param_modifiers)
+            {
+                return _context.paramData.parameterInfo.GetModifiersString();
+            }
+            else if (_tag == Tags.param_type)
+            {
+                return _context.paramData.parameterInfo.ParameterType.GetMarkdownTypeName();
+            }
+            else if (_tag == Tags.param_name)
+            {
+                return _context.paramData.parameterInfo.Name;
+            }
+            else if (_tag == Tags.escaped_param_name)
+            {
+                return _context.paramData.parameterInfo.Name.MarkdownEscape();
+            }
+            else if (_tag == Tags.param_default_value)
+            {
+                return _context.paramData.parameterInfo.DefaultValue?.ToString() ?? "";
+            }
+            else if (_tag == Tags.param_desc)
+            {
+                return _context.paramData.xmlData.summary;
+            }
+
+            throw new ArgumentException("One of these happened: Invalid tag; tag not supported. Tag is: '" + _tag.ToString() + "'.");
+        }
+
+        void ReplaceTagWithValue(ref string _str, Tags _tag, TagContext _tagContext)
+        {
+            _str = Regex.Replace(_str, _tag.Str(), GetTagValue(_tagContext, _tag));
+        }
     }
 
-    public struct PageData
+    struct PageData
     {
         public string name;
         public string path;
@@ -469,5 +648,14 @@ namespace XMLDocGen
             this.path = _path;
             this.content = _content;
         }
+    }
+
+    struct TagContext
+    {
+        public TypeData typeData;
+        public FieldData fieldData;
+        public PropertyData propertyData;
+        public MethodData methodData;
+        public ParameterData paramData;
     }
 }

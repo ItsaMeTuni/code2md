@@ -133,6 +133,11 @@ namespace XMLDocGen
             return _regex ? Regex.Escape("$" + _tag + "$") : "$" + _tag + "$";
         }
 
+        public static string CondStr(this Tags _tag, bool _regex = true)
+        {
+            return _regex ? Regex.Escape("?" + _tag + "?") : "?" + _tag + "?";
+        }
+
         public static string MarkdownEscape(this string _text)
         {
             return MarkdownBuilder.Escape(_text);
