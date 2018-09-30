@@ -12,7 +12,7 @@ using System.Configuration;
 
 namespace XMLDocGen
 {
-    class Program
+    public class Program
     {
         public static string XmlPath { get; private set; }
         public static string AssemblyPath { get; private set; }
@@ -63,10 +63,16 @@ namespace XMLDocGen
             string template = File.ReadAllText(TemplatePath);
             List<TypeData> typeDatas = new DataGatherer(assembly, xml).GetTypeData();
 
-            TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
+            TemplateParser parser = new TemplateParser();
+            OutputBuilder builder = new OutputBuilder();
 
-            PageGenerator generator = new PageGenerator(replacer.Replace());
-            generator.Generate();
+            //List<ParsedPart> parts = parser.Parse(ref template);
+            //builder.ReconstructFromParts(ref template, parts);
+
+            //TemplateReplacer replacer = new TemplateReplacer(template, typeDatas);
+
+            //PageGenerator generator = new PageGenerator(replacer.Replace());
+            //generator.Generate();
         }
 
         public static string ToAbsolutePath(string _path)

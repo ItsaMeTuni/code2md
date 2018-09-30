@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DataGatherer.cs" />
     <Compile Include="DummyClass.cs" />
+    <Compile Include="OutputBuilder.cs" />
     <Compile Include="PageGenerator.cs" />
     <Compile Include="MarkdownBuilder.cs" />
     <Compile Include="Program.cs" />

@@ -9,28 +9,6 @@ namespace XMLDocGen
 {
     public enum Tags
     {
-        START_CLASS,
-        END_CLASS,
-        START_FIELD,
-        END_FIELD,
-        START_PROPERTY,
-        END_PROPERTY,
-        START_METHOD,
-        END_METHOD,
-        START_PARAM,
-        END_PARAM,
-        START_ENUM,
-        END_ENUM,
-        START_ENUM_ELEMENT,
-        END_ENUM_ELEMENT,
-        START_FIELDS,
-        END_FIELDS,
-        START_PROPERTIES,
-        END_PROPERTIES,
-        START_METHODS,
-        END_METHODS,
-        START_PARAMS,
-        END_PARAMS,
         class_modifiers,
         class_name,
         escaped_class_name,
@@ -80,9 +58,25 @@ namespace XMLDocGen
         class_full_name,
         escaped_class_full_name,
         enum_full_name,
-        escaped_enum_full_name
+        escaped_enum_full_name,
     }
 
+    public enum AreaTags
+    {
+        CLASS,
+        FIELD,
+        PROPERTY,
+        METHOD,
+        PARAM,
+        ENUM,
+        ENUM_ELEMENT,
+        FIELDS,
+        PROPERTIES,
+        METHODS,
+        PARAMS,
+    }
+
+    /*
     class TemplateReplacer
     {
         public const char tagChar = '$';
@@ -452,7 +446,7 @@ namespace XMLDocGen
             }
         }
 
-        string GetTagValue(TagContext _context, Tags _tag)
+        public static string GetTagValue(TagContext _context, Tags _tag)
         {
             EnumTypeSpecialData enumTypeSpecialData = null;
             EnumFieldSpecialData enumFieldSpecialData = null;
@@ -635,8 +629,8 @@ namespace XMLDocGen
             _str = Regex.Replace(_str, _tag.Str(), GetTagValue(_tagContext, _tag));
         }
     }
-
-    struct PageData
+    */
+    public struct PageData
     {
         public string name;
         public string path;
@@ -650,7 +644,7 @@ namespace XMLDocGen
         }
     }
 
-    struct TagContext
+    public struct TagContext
     {
         public TypeData typeData;
         public FieldData fieldData;

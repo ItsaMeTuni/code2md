@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace XMLDocGen
 {
-    class DataGatherer
+    public class DataGatherer
     {
         const BindingFlags bindingFlags = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
@@ -203,7 +203,7 @@ namespace XMLDocGen
         }
     }
 
-    class TypeData
+    public class TypeData
     {
         public TypeInfo typeInfo;
         public XmlData xmlData;
@@ -215,7 +215,7 @@ namespace XMLDocGen
         public SpecialData specialTypeData;
     }
 
-    class MethodData
+    public class MethodData
     {
         public MethodInfo methodInfo;
         public XmlData xmlData;
@@ -223,7 +223,7 @@ namespace XMLDocGen
         public List<ParameterData> parameters;
     }
 
-    class FieldData
+    public class FieldData
     {
         public FieldInfo fieldInfo;
         public XmlData xmlData;
@@ -231,19 +231,19 @@ namespace XMLDocGen
         public SpecialData specialFieldData;
     }
 
-    class PropertyData
+    public class PropertyData
     {
         public PropertyInfo propertyInfo;
         public XmlData xmlData;
     }
 
-    class ParameterData
+    public class ParameterData
     {
         public ParameterInfo parameterInfo;
         public XmlData xmlData;
     }
 
-    class XmlData
+    public class XmlData
     {
         public string summary;
         public string remarks;
@@ -251,15 +251,15 @@ namespace XMLDocGen
         public string example;
     }
 
-    class SpecialData { }
+    public class SpecialData { }
 
-    class EnumFieldSpecialData : SpecialData
+    public class EnumFieldSpecialData : SpecialData
     {
         //Value is stored in a string because it can be one of many types (like uint, int, long, ushort, etc)
         public string value;
     }
 
-    class EnumTypeSpecialData : SpecialData
+    public class EnumTypeSpecialData : SpecialData
     {
         public Type underlyingType;
     }
