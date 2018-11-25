@@ -105,7 +105,7 @@ namespace XMLDocGen
                 {
                     fieldData.specialFieldData = new EnumFieldSpecialData()
                     {
-                        value = enumStrValues[iField]
+                        value = enumStrValues[iField - 1] //First field is __value
                     };
                 }
 

@@ -651,5 +651,33 @@ namespace XMLDocGen
         public PropertyData propertyData;
         public MethodData methodData;
         public ParameterData paramData;
+
+        public bool IsEmpty()
+        {
+            bool retVal = true;
+
+            retVal &= typeData == null;
+            retVal &= fieldData == null;
+            retVal &= propertyData == null;
+            retVal &= methodData == null;
+            retVal &= paramData == null;
+
+            return retVal;
+        }
+
+        public static TagContext Empty
+        {
+            get
+            {
+                return new TagContext()
+                {
+                    typeData = null,
+                    fieldData = null,
+                    propertyData = null,
+                    methodData = null,
+                    paramData = null
+                };
+            }
+        }
     }
 }

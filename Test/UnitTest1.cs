@@ -37,6 +37,14 @@ namespace Test
             "Proceed to methods. " +
             "$END_CLASS$";
 
+        public string fragmn3 =
+            "$START_CLASS$" +
+            "$class_name$" +
+            "$END_CLASS$" +
+            "$START_ENUM$" +
+            "$enum_name$" +
+            "$END_ENUM$";
+
         [TestMethod]
         public void TestParse()
         {
@@ -47,6 +55,30 @@ namespace Test
             {
                 PrintPart(parsedParts[i], 0);
             }
+        }
+
+        [TestMethod]
+        public void TestLink()
+        {
+            TemplateParser parser = new TemplateParser();
+            var parsedParts = parser.ParseParts(ref fragmn3);
+
+            XmlDocument xmlDoc = new XmlDocument();
+            xmlDoc.Load("XMLDocGen.xml");
+            XmlNodeList xml = xmlDoc.SelectNodes("doc/members/member");
+
+            DataGatherer dataGatherer = new DataGatherer(Assembly.GetAssembly(typeof(DataGatherer)), xml);
+            var typeDatas = dataGatherer.GetTypeData();
+
+            OutputBuilder builder = new OutputBuilder();
+            var linkedStuff = builder.LinkPartsToData(parsedParts, typeDatas, TagContext.Empty);
+
+            
+            for (int i = 0; i < linkedStuff.Count; i++)
+            {
+                PrintLinkedPart(linkedStuff[i], 0);
+            }
+            
         }
 
         void PrintPart(ParsedPart _part, int level)
@@ -82,5 +114,46 @@ namespace Test
                 PrintPart(_part.childParts[i], level + 1);
             }
         }
+
+        void PrintLinkedPart(LinkedPart _part, int level)
+        {
+            string str = "- ";
+
+            if (_part.parsedPart.type == ParsedPart.PartType.Area)
+            {
+                str += _part.parsedPart.areaTag;
+            }
+            else if (_part.parsedPart.type == ParsedPart.PartType.Conditional || _part.parsedPart.type == ParsedPart.PartType.Data)
+            {
+                str += _part.parsedPart.tag;
+            }
+            else
+            {
+                str += "\"" + _part.parsedPart.text + "\"";
+            }
+
+            str += "(" + _part.parsedPart.type.ToString() + "): {";
+
+            str += _part.context.typeData != null ? _part.context.typeData.typeInfo.Name + " " : " ";
+            str += _part.context.fieldData != null ? _part.context.fieldData.fieldInfo.Name + " " : " ";
+            str += _part.context.methodData != null ? _part.context.methodData.methodInfo.Name + " " : " ";
+            str += _part.context.paramData != null ? _part.context.paramData.parameterInfo.Name + " " : " ";
+            str += _part.context.propertyData != null ? _part.context.propertyData.propertyInfo.Name + " " : " ";
+
+            str += "}";
+
+            for (int i = 0; i < level; i++)
+            {
+                str = str.Insert(0, "    ");
+            }
+
+            Console.WriteLine(str);
+
+            for (int i = 0; i < _part.children.Count; i++)
+            {
+                PrintLinkedPart(_part.children[i], level + 1);
+            }
+        }
+
     } 
 }

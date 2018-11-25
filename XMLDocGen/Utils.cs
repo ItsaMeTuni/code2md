@@ -144,5 +144,52 @@ namespace XMLDocGen
         {
             return MarkdownBuilder.Escape(_text);
         }
+
+        /// <summary>
+        /// Returns the first (or last if _popLast is true) item of the list and removes it.
+        /// This way you can use a list like a queue (_popLast = false) or a stack (_popLast = true).
+        /// </summary>
+        /// <param name="_popLast">If false this will behave as a queue (pop index 0), if false this will behave like a stack (pop last item on the list).</param>
+        public static T Pop<T>(this List<T> _list, Predicate<T> _filter = null, bool _popLast = false)
+        {
+            if(_list.Count == 0)
+            {
+                return default(T);
+            }
+
+            if (_filter == null)
+            {
+                int index = _popLast ? _list.Count - 1 : 0;
+
+                T t = _list[index];
+                _list.RemoveAt(index);
+
+                return t;
+            }
+            else
+            {
+                int index;
+                if(_popLast)
+                {
+                    index = _list.FindLastIndex(_filter);
+                }
+                else
+                {
+                    index = _list.FindIndex(_filter);
+                }
+
+                if (index != -1)
+                {
+                    T t = _list[index];
+                    _list.RemoveAt(index);
+
+                    return t;
+                }
+                else
+                {
+                    return default(T);
+                }
+            }
+        }
     }
 }
